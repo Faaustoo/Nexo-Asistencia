@@ -1,0 +1,121 @@
+body {
+    margin: 0;
+    font-family: 'Vintage Style', cursive;
+    background-color: #b7b3fa;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.login-container {
+    background-color: #fff; 
+    padding: 30px;
+    box-shadow: 10px 10px 0px #000;
+    border: 1px solid #000;
+    min-width: 360px;
+    text-align: left; 
+    max-height: 80vh; /* Limita la altura máxima */
+    overflow-y: auto; /* Agrega scroll vertical si es necesario */
+}
+
+.fila {
+    margin: 0px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.columna {
+    flex: 1;
+    margin: 0 15px 0 15px;
+}
+
+h2 {
+    color: #000;
+    font-size: 24px;
+    text-align: center; 
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #000;
+    text-align: left;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #000;
+    box-shadow: 5px 5px 0px #000;
+    font-size: 16px;
+    color: #000;
+    background-color: #fff;
+    box-sizing: border-box;
+    outline: none;
+    transition: 0.3s ease;
+}
+
+input:focus {
+    box-shadow: -5px 5px 0px rgba(0, 0, 0, 1);
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0px 0 0px;
+    background-color:  #b7b3fa;
+    box-shadow: 5px 5px 0px #000;
+    border: 1px solid #000;
+    color: #000;
+    font-size: 16px;
+    font-family: 'Vintage Style', cursive;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+button:hover {
+    background-color: #5727c6;
+    color: #000;
+}
+
+p {
+    margin-top: 15px;
+    color: #000; 
+    text-align: left; 
+}
+
+a {
+    color: #000; 
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+a:hover {
+    color: #2357d1;
+    border-bottom: 2px solid  #2357d1; 
+}
+
+
+.mensajes-error {
+    color:#000;
+    box-shadow: 5px 5px 0px #000;
+    background-color:#ce1414;
+       margin-top: 15px; 
+    text-align: center;
+}
+
+.mensajes-exito{
+    color:#000;
+    box-shadow: 5px 5px 0px #000;
+    background-color:#14ce27;
+       margin-top: 15px; 
+    text-align: center;
+
+}

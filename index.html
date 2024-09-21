@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="App/Resources/CSS/styles.css">
+</head>
+<body>
+    <div class="login-container">
+        <h2>Iniciar sesión</h2>
+        <form id="formularioLogin" method="post">
+            <div class="fila">
+                <div class="columna">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" >
+                </div>
+            </div>
+            <div class="fila">
+                <div class="columna">
+                    <label for="contrasena">Contraseña:</label>
+                    <input type="password" id="contrasena" name="contrasena" >
+                </div>
+            </div>
+            <div class="fila">
+                <div class="columna">
+                    <button type="submit" >Enviar</button>
+                </div>
+            </div>
+
+            <div class="mensajes-exito">
+                <div id="resultado"></div>
+            </div>
+            <div class="mensajes-error">
+                <div id="error" class="error"></div>
+            </div>
+            
+            <p>¿No tienes una cuenta? <a href="registroProfesor.html">Registrarte</a></p>
+        </form>
+    </div>
+    <script src="App\Resources\JS\login.js"></script>
+</body>
+</html>

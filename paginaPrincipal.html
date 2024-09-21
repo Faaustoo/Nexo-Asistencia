@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Principal</title>
+    <link rel="stylesheet" href="App/Resources/CSS/principal.css">
+</head>
+<body>
+<div class="login-container">
+    <div class="header-container">
+        <button id="cerrar-sesion" class="info-button">Cerrar sesión</button>
+        <button class="close-button">X</button>
+    </div>
+
+    <div class="main-content">
+        <div class="institucion-container">
+            <h2>Instituciones</h2>
+            <label for="institucion">Crear institución:</label>
+            <button type='button' id="crear-institucion">CREAR</button>
+        </div>
+        <div class="contenido-container">
+            <p>Contenido Principal</p>
+            
+            <form id="formularioInstitucion" style="display: none;">
+                <label for="nombreInstitucion">Nombre de la Institución:</label>
+                <input type="text" id="nombre_institucion" name="nombre_institucion" required>
+
+                <label for="direccion_institucion">Dirección de la Institución:</label>
+                <input type="text" id="direccion_institucion" name="direccion_institucion" required>
+
+                <button type='submit' id="enviar-institucion">Enviar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="App\Resources\JS\principal.js"></script>
+</body>
+</html>
