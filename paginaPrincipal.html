@@ -15,22 +15,33 @@
 
     <div class="main-content">
         <div class="institucion-container">
-            <h2>Instituciones</h2>
-            <label for="institucion">Crear institución:</label>
-            <button type='button' id="crear-institucion">CREAR</button>
+            <button type="button" id="crear-institucion">CREAR INSTITUCIÓN</button>
+            <label>Instituciones</label>
+            <div id="lista-instituciones"></div>
         </div>
         <div class="contenido-container">
-            <p>Contenido Principal</p>
-            
-            <form id="formularioInstitucion" style="display: none;">
-                <label for="nombreInstitucion">Nombre de la Institución:</label>
-                <input type="text" id="nombre_institucion" name="nombre_institucion" required>
+            <div class="form-container" style="display: none;" id="formularioInstitucion">
+                <h3>Ingresar datos de la institución</h3>
+                <form id="formDatosInstitucion" method="post">
+                    <div class="info-form-container"> 
+                        <label for="nombre_institucion">Nombre de la Institución:</label>
+                        <input type="text" id="nombre_institucion" name="nombre_institucion" >
+                        <label for="direccion_institucion">Dirección de la Institución:</label>
+                        <input type="text" id="direccion_institucion" name="direccion_institucion">
+                        <label for="cue_institucion">CUE de la Institución:</label>
+                        <input type="text" id="cue_institucion" name="cue_institucion" >
+                        <button type='submit' id="enviar-institucion">Enviar</button>
+                    </div>
 
-                <label for="direccion_institucion">Dirección de la Institución:</label>
-                <input type="text" id="direccion_institucion" name="direccion_institucion" required>
-
-                <button type='submit' id="enviar-institucion">Enviar</button>
-            </form>
+                    <div class ="cerrar"><button type="button" id="cerrar-institucion">CERRAR</button></div>
+                    <div class="mensajes-exito">
+                        <div id="resultado"></div>
+                    </div>
+                    <div class="mensajes-error">
+                        <div id="error" class="error"></div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

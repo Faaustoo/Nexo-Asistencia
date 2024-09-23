@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $usuarioValido = $profesor->validarLogin($data['email'], $data['contrasena'], $profesores);
         
         if ($usuarioValido) {
-            $_SESSION['usuario'] = $usuarioValido;
+            $_SESSION['profesor'] = $usuarioValido;
             echo json_encode(['estado' => 'exito', 'mensaje' => 'Login exitoso.']);
         } else {
             echo json_encode(['estado' => 'error', 'mensaje' => 'Email o contraseña incorrecto.']);
@@ -24,5 +24,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo json_encode(['estado' => 'error', 'errores' => $erroresValidar]);
     }
 }
-
 ?>

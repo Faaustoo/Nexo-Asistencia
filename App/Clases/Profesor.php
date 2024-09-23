@@ -4,10 +4,10 @@ require_once 'App\Traits\validar-profesor.php';
 
 use App\Traits\Validaciones;
 
-class Profesor extends Persona {
 
-    use Validaciones ;
-    
+class Profesor extends Persona {
+    use Validaciones; 
+
     private $table = 'profesores';
     private $id_profesor;
     private $contrasena;
@@ -33,6 +33,10 @@ class Profesor extends Persona {
 
     public function setNumeroLegajo($numero_legajo){
         $this->numero_legajo= $numero_legajo;
+    }
+
+    public function setIdProfesor($id_profesor){
+        $this->id_profesor = $id_profesor;
     }
 
     public function create($conn) {
@@ -139,12 +143,20 @@ public function actualizarProfesor($conn, $id_profesor) {
         foreach ($profesores as $profesor) {
             if ($profesor['email'] === $email) {
                 if (password_verify($contrasena, $profesor['contrasena'])) {
-                    return $profesor; 
+                    return [
+                        'id_profesor' => $profesor['id_profesor'], 
+                        'apellido' => $profesor['apellido'],
+                        'dni' => $profesor['dni'],
+                        'email' => $profesor['email'],
+                        'legajo' => $profesor['numero_legajo'],
+                    ];
                 }
             }
         }
         return null; 
     }
+    
+    
 }
 
 ?>

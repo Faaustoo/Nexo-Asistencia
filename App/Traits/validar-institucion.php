@@ -1,7 +1,7 @@
 <?php
 namespace App\Traits;
 
-trait Validaciones {
+trait ValidarInstitucion {
     
     public function clean_input($data) {
         $data = trim($data);
@@ -12,46 +12,22 @@ trait Validaciones {
 
     public function obtenerDatos() {
         $datos = [];
-        if (isset($_POST['nombre'])) {
-            $datos['nombre'] = $this->clean_input($_POST['nombre']);
+        if (isset($_POST['nombre_institucion'])) {
+            $datos['nombre_institucion'] = $this->clean_input($_POST['nombre_institucion']);
         } else {
-            $datos['nombre'] = '';
+            $datos['nombre_institucion'] = '';
         }
 
-        if (isset($_POST['apellido'])) {
-            $datos['apellido'] = $this->clean_input($_POST['apellido']);
+        if (isset($_POST['direccion_institucion'])) {
+            $datos['direccion_institucion'] = $this->clean_input($_POST['direccion_institucion']);
         } else {
-            $datos['apellido'] = '';
+            $datos['direccion_institucion'] = '';
         }
 
-        if (isset($_POST['dni'])) {
-            $datos['dni'] = $this->clean_input($_POST['dni']);
+        if (isset($_POST['cue_institucion'])) {
+            $datos['cue_institucion'] = $this->clean_input($_POST['cue_institucion']);
         } else {
-            $datos['dni'] = '';
-        }
-
-        if (isset($_POST['email'])) {
-            $datos['email'] = $this->clean_input($_POST['email']);
-        } else {
-            $datos['email'] = '';
-        }
-
-        if (isset($_POST['numero_legajo'])) {
-            $datos['numero_legajo'] = $this->clean_input($_POST['numero_legajo']);
-        } else {
-            $datos['numero_legajo'] = '';
-        }
-
-        if (isset($_POST['contrasena'])) {
-            $datos['contrasena'] = $this->clean_input($_POST['contrasena']);
-        } else {
-            $datos['contrasena'] = '';
-        }
-
-        if (isset($_POST['confirmar_contrasena'])) {
-            $datos['confirmar_contrasena'] = $this->clean_input($_POST['confirmar_contrasena']);
-        } else {
-            $datos['confirmar_contrasena'] = '';
+            $datos['cue_institucion'] = '';
         }
 
         return $datos;
@@ -60,78 +36,27 @@ trait Validaciones {
     public function validarDatos($data) {
         $errores = [];
 
-        $numeros = "/^\d+$/";
-        $email = "/^[^\s@]+@[^\s@]+\.[^\s@]+$/";
+        $letrasEspaciosNumeros = "/^[a-zA-Z0-9\s]+$/";
         $letrasEspacios = "/^[a-zA-Z\s]+$/";
+        $numeros = "/^[0-9]+$/";
 
-        if (empty($data['nombre'])) {
+        if (empty($data['nombre_institucion'])) {
             $errores[] = "El nombre es obligatorio.";
-        } elseif (!preg_match($letrasEspacios, $data['nombre'])) {
+        } elseif (!preg_match($letrasEspacios, $data['nombre_institucion'])) {
             $errores[] = "El nombre solo puede contener letras y espacios.";
         }
 
-        if (empty($data['apellido'])) {
-            $errores[] = "El apellido es obligatorio.";
-        } elseif (!preg_match($letrasEspacios, $data['apellido'])) {
-            $errores[] = "El apellido solo puede contener letras y espacios.";
+        if (empty($data['direccion_institucion'])) {
+            $errores[] = "La direccion es obligatoria.";
+        } elseif (!preg_match($letrasEspaciosNumeros, $data['direccion_institucion'])) {
+            $errores[] = "la direccion solo puede contener letras,espacios y numeros.";
         }
 
-        if (empty($data['dni'])) {
-            $errores[] = "El DNI es obligatorio.";
-        } elseif (!preg_match($numeros, $data['dni'])) {
-            $errores[] = "El DNI solo puede contener números.";
+        if (empty($data['cue_institucion'])) {
+            $errores[] = "El cue es obligatorio.";
+        } elseif (!preg_match($numeros, $data['cue_institucion'])) {
+            $errores[] = "El cue solo puede contener numeros.";
         }
-
-        if (empty($data['numero_legajo'])) {
-            $errores[] = "El número de legajo es obligatorio.";
-        } elseif (!preg_match($numeros, $data['numero_legajo'])) {
-            $errores[] = "El número de legajo solo puede contener números.";
-        }
-
-        if (empty($data['email'])) {
-            $errores[] = "El correo es obligatorio.";
-        } elseif (!preg_match($email, $data['email'])) {
-            $errores[] = "El formato del correo no es válido.";
-        }
-
-        if (empty($data['contrasena'])) {
-            $errores[] = "La contraseña es obligatoria.";
-        }
-
-        if (empty($data['confirmar_contrasena'])) {
-            $errores[] = "Confirmar la contraseña es obligatorio.";
-        }
-
-        if ($data['contrasena'] !== $data['confirmar_contrasena']) {
-            $errores[] = "Las contraseñas no coinciden.";
-        }
-
-        return $errores;
-    }
-
-    public function obtenerDatosLogin() {
-        $datos = [];
-        
-        $datos['email'] = isset($_POST['email']) ? $this->clean_input($_POST['email']) : '';
-        $datos['contrasena'] = isset($_POST['contrasena']) ? $this->clean_input($_POST['contrasena']) : '';
-        
-        return $datos;
-    }
-
-    public function validarDatosLogin($data) {
-        $errores = [];
-        $email = "/^[^\s@]+@[^\s@]+\.[^\s@]+$/";
-
-        if (empty($data['email'])) {
-            $errores[] = "El correo es obligatorio.";
-        } elseif (!preg_match($email, $data['email'])) {
-            $errores[] = "El formato del correo no es válido.";
-        }
-
-        if (empty($data['contrasena'])) {
-            $errores[] = "La contraseña es obligatoria.";
-        }
-
         return $errores;
     }
 
