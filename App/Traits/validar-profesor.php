@@ -111,12 +111,22 @@ trait Validaciones {
 
     public function obtenerDatosLogin() {
         $datos = [];
-        
-        $datos['email'] = isset($_POST['email']) ? $this->clean_input($_POST['email']) : '';
-        $datos['contrasena'] = isset($_POST['contrasena']) ? $this->clean_input($_POST['contrasena']) : '';
-        
+    
+        if (isset($_POST['email'])) {
+            $datos['email'] = $this->clean_input($_POST['email']);
+        } else {
+            $datos['email'] = '';
+        }
+    
+        if (isset($_POST['contrasena'])) {
+            $datos['contrasena'] = $this->clean_input($_POST['contrasena']);
+        } else {
+            $datos['contrasena'] = '';
+        }
+    
         return $datos;
     }
+    
 
     public function validarDatosLogin($data) {
         $errores = [];

@@ -23,17 +23,20 @@ formulario.addEventListener('submit', function(e) {
         body: datos
     })
     .then(res => res.json())
-.then(data => {
-    console.log(data);
-    document.getElementById('resultado').innerHTML = '';
-    document.getElementById('error').innerHTML = '';
+    .then(data => {
+        console.log(data);
+        document.getElementById('resultado').innerHTML = '';
+        document.getElementById('error').innerHTML = '';
 
-    if (data.estado === 'exito') {
-        document.getElementById('resultado').innerHTML = data.mensaje; 
-    } else if (data.estado === 'error') {
-            document.getElementById('error').innerHTML = data.errores.join('<br>'); 
+        if (data.estado === 'exito') {
+            document.getElementById('resultado').innerHTML = data.mensaje; 
+        } else if (data.estado === 'error') {
+            data.errores.forEach(error => {
+                document.getElementById('error').innerHTML += error + '<br>'; 
+            });
         }
-}).catch(error => {
+    })
+    .catch(error => {
         console.error('Error:', error);
         document.getElementById('error').innerHTML = 'Error al usar fetch: ' + error;
     });

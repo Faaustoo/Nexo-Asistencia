@@ -77,6 +77,16 @@ class Institucion {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC); 
     }
+
+    public function existeCue($db) {
+        $cue = $this->getCue();
+        $queryCheck = "SELECT COUNT(*) FROM " . $this->table . " WHERE cue = :cue";
+        $stmtCheck = $db->prepare($queryCheck);
+        $stmtCheck->bindParam(':cue', $cue);
+        $stmtCheck->execute();
+        return $stmtCheck->fetchColumn() > 0; 
+    }
+
     
 }
 ?>

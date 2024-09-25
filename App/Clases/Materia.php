@@ -62,8 +62,8 @@ class Materia {
         $descripcion = $this->getDescripcion();
 
         $query = "UPDATE " . $this->table . " 
-                  SET nombre = :nombre, descripcion = :descripcion 
-                  WHERE id_materia = :id_materia";
+            SET nombre = :nombre, descripcion = :descripcion 
+            WHERE id_materia = :id_materia";
 
         $stmt = $conn->prepare($query);
         $stmt->bindParam(':nombre', $nombre);

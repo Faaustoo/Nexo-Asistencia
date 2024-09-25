@@ -6,15 +6,19 @@ $database = new Database();
 $conn = $database->connect();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    
     $institucion = new Institucion('', '', '');
     $data = $institucion->obtenerDatos(); 
     $erroresValidar = $institucion->validarDatos($data);
 
+    $institucion->setCue($data['cue_institucion']); 
+    if ($institucion->existeCue($conn)) {
+        $erroresValidar[] = 'El CUE ya existe en la base de datos.'; 
+    }
+
     if (empty($erroresValidar)) {
         $institucion->setNombre($data['nombre_institucion']);
         $institucion->setDireccion($data['direccion_institucion']);
-        $institucion->setCue($data['cue_institucion']);
-
         if ($institucion->crearInstitucion($conn)) { 
             echo json_encode(['estado' => 'exito', 'mensaje' => 'Institución creada con éxito.']);
         } else {
@@ -26,3 +30,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 } else {
     echo json_encode(['estado' => 'error', 'mensaje' => 'No se envió por POST.']);
 }
+?>
