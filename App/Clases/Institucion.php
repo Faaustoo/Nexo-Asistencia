@@ -12,11 +12,14 @@ class Institucion {
     private $nombre;                 
     private $direccion;   
     private $cue;     
+    private $id_profesor; 
     
-    public function __construct($nombre, $direccion, $cue) {
+
+    public function __construct($nombre, $direccion, $cue, $id_profesor) {
         $this->nombre = $nombre;         
         $this->direccion = $direccion;
         $this->cue = $cue; 
+        $this->id_profesor = $id_profesor; 
     }
 
     public function getIdInstitucion() {
@@ -35,9 +38,18 @@ class Institucion {
         return $this->cue;
     }
 
+    
+    public function getIdProfesor() {
+        return $this->id_profesor; 
+    }
+
 
     public function setNombre($nombre) {
         $this->nombre = $nombre;
+    }
+
+    public function setIdInstitucion($id_institucion) {
+    $this->id_institucion = $id_institucion;
     }
 
     public function setDireccion($direccion) {
@@ -48,20 +60,21 @@ class Institucion {
         $this->cue = $cue;
     }
 
-
-
     public function crearInstitucion($db) {
         $nombre = $this->getNombre();
         $direccion = $this->getDireccion();
         $cue = $this->getCue();
+        $id_profesor = $this->getIdProfesor(); 
     
-        $query = "INSERT INTO " . $this->table . " (nombre, direccion, cue) 
-        VALUES (:nombre, :direccion, :cue)";
+        
+        $query = "INSERT INTO " . $this->table . " (nombre, direccion, cue, id_profesor) 
+                  VALUES (:nombre, :direccion, :cue, :id_profesor)";
     
         $stmt = $db->prepare($query);
         $stmt->bindParam(':nombre', $nombre);
         $stmt->bindParam(':direccion', $direccion);
         $stmt->bindParam(':cue', $cue);
+        $stmt->bindParam(':id_profesor', $id_profesor);
         
         if ($stmt->execute()) {
             $this->id_institucion = $db->lastInsertId();
@@ -70,11 +83,14 @@ class Institucion {
         return false;
     }
     
-    public function obtenerInstitucion($conn, $id_profesor) {
+    
+    public function obtenerInstitucionesProfesor($conn) {
+
         $query = "SELECT * FROM " . $this->table . " WHERE id_profesor = :id_profesor";
         $stmt = $conn->prepare($query);
-        $stmt->bindParam(':id_profesor', $id_profesor, PDO::PARAM_INT);
+        $stmt->bindParam(':id_profesor', $this->id_profesor, PDO::PARAM_INT);
         $stmt->execute();
+        
         return $stmt->fetchAll(PDO::FETCH_ASSOC); 
     }
 
@@ -86,7 +102,5 @@ class Institucion {
         $stmtCheck->execute();
         return $stmtCheck->fetchColumn() > 0; 
     }
-
-    
 }
 ?>

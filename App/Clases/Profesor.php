@@ -156,7 +156,5 @@ public function actualizarProfesor($conn, $id_profesor) {
         return null; 
     }
     
-    
 }
-
 ?>
