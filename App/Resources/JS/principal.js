@@ -41,3 +41,31 @@ formulario.addEventListener('submit', function(e) {
         document.getElementById('error').innerHTML = 'Error al usar fetch: ' + error;
     });
 });
+
+
+function cargarInstituciones() {
+    fetch('obtenerInstituciones.php') 
+        .then(res => res.json())
+        .then(data => {
+            const listaInstituciones = document.getElementById('lista-instituciones');
+            listaInstituciones.innerHTML = ''; 
+
+            if (data.estado === 'exito') {
+                data.instituciones.forEach(institucion => {
+                    listaInstituciones.innerHTML += `
+                        <a href="paginaSecundaria.html?id=${institucion.id_institucion}" style="display: block; margin: 5px 0;">
+                            ${institucion.nombre}
+                        </a>
+                    `;
+                });
+            } else {
+                listaInstituciones.innerHTML = `<p>${data.mensaje}</p>`;
+            }
+        })
+        .catch(error => {
+            console.error('Error al cargar instituciones:', error);
+            document.getElementById('lista-instituciones').innerHTML = '<p>Error al cargar instituciones.</p>';
+        });
+}
+
+document.addEventListener('DOMContentLoaded', cargarInstituciones);

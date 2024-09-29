@@ -6,12 +6,9 @@ $database = new Database();
 $conn = $database->connect();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    // Obtener el ID del profesor de la sesión
     $id_profesor = $_SESSION['id_profesor'];
     
-    // Crear una nueva instancia de Institucion, pasando el id_profesor
-    $institucion = new Institucion('', '', '', $id_profesor); // Agregar el id_profesor
+    $institucion = new Institucion('', '', '', $id_profesor); 
     $data = $institucion->obtenerDatos(); 
     $erroresValidar = $institucion->validarDatos($data);
 
@@ -26,6 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         if ($institucion->crearInstitucion($conn)) { 
             $id_institucion = $conn->lastInsertId();
+            $_SESSION['id_institucion'] = $id_institucion; 
             echo json_encode(['estado' => 'exito', 'mensaje' => 'Institución creada con éxito.', 'id_institucion' => $id_institucion]);
         } else {
             echo json_encode(['estado' => 'error', 'mensaje' => 'Error al crear la institución.']);

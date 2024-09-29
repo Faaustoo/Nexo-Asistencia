@@ -1,6 +1,6 @@
 <?php
 require_once 'Persona.php';
-require_once 'App\Traits\validar-profesor.php';
+require_once 'App\Traits\Validaciones.php';
 
 use App\Traits\Validaciones;
 

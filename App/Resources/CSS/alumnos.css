@@ -1,0 +1,185 @@
+body {
+    margin: 0;
+    font-family: 'Vintage Style', cursive;
+    background-color: #b7b3fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-container {
+    width: 90%;
+    height: 90%;
+    background-color: #fff;
+    box-shadow: 10px 10px 0px #000;
+    border: 1.5px solid #000;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.header-container {
+    width: 100%;
+    height: 50px;
+    background-color: yellow;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #000;
+}
+
+.button-container {
+    border: 2px solid red;
+    display: flex;
+    justify-content: space-between;
+    margin: 5px;
+    padding: 10px;
+}
+
+button {
+    height: 30px; /* Reducido */
+    width: 80px;  /* Reducido */
+}
+
+#crear-alumno {
+    border: 2px solid black;
+    color: #000;
+    background-color: #0ad217;
+    transition: 0.5 ease;
+}
+
+#crear-alumno:hover {
+    background-color: #0f3812;
+    color: #03640a;
+}
+
+.contenido-container {
+    border: #03640a 2px solid;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+    height: 500px;
+}
+
+.info-form-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #000; /* Borde negro alrededor del formulario */
+}
+
+.fila {
+    display: flex;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.columna {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.columna:last-child {
+    margin-right: 0;
+}
+
+.fila input {
+    width: 95%; /* Más pequeño */
+    height: 30px; /* Altura del input más pequeña */
+    padding: 5px; /* Reducción de padding */
+    border: 1px solid #000;
+    box-shadow: 3px 3px 0px #000; /* Sombra más pequeña */
+    font-size: 14px; /* Fuente más pequeña */
+    background-color: #fff;
+    box-sizing: border-box;
+    outline: none;
+    transition: 0.3s ease;
+}
+
+.fila label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #000;
+}
+
+.form-container button {
+    width: 100%;
+    height: 30px; /* Altura del botón más pequeña */
+    padding: 5px; /* Reducción de padding */
+    margin: 10px 0 0 0;
+    background-color: #b7b3fa;
+    box-shadow: 3px 3px 0px #000; /* Sombra más pequeña */
+    border: 1px solid #000;
+    color: #000;
+    font-size: 14px; /* Fuente más pequeña */
+    font-family: 'Vintage Style', cursive;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.form-container button:hover {
+    background-color: #5727c6;
+    color: #000;
+}
+
+.cerrar {
+    margin-top: 10px;
+}
+
+.cerrar button {
+    background-color: red; /* Color del botón cerrar */
+    color: lightcoral; /* Color de la letra */
+}
+
+.cerrar button:hover {
+    background-color: darkred; /* Hover más oscuro */
+    color: lightcoral; /* Color de la letra al hacer hover */
+}
+
+.cerrar{
+    display: flex;
+    text-align: right;
+    height:65px;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: flex-end;
+}
+
+.cerrar button {
+    width: 80px;
+    height: 40px;
+    background-color: #de0909;
+    border: 1px solid #000;
+    color: #000;
+    font-family: 'Vintage Style', cursive;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.cerrar button:hover {
+    background-color: #ff0000;
+    color: #000;
+}
+
+.mensajes-error {
+    color:#000;
+    box-shadow: 5px 5px 0px #000;
+    background-color:#ce1414;
+    text-align: center;
+}
+
+.mensajes-exito{
+    color:#000;
+    box-shadow: 5px 5px 0px #000;
+    background-color:#14ce27;
+    text-align: center;
+
+}

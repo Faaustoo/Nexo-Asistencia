@@ -1,5 +1,5 @@
 <?php
-require_once 'App\Traits\validar-institucion.php';
+require_once 'App\Traits\ValidarInstitucion.php';
 
 use App\Traits\ValidarInstitucion;
 
@@ -85,9 +85,9 @@ class Institucion {
     
     
     public function obtenerInstitucionesProfesor($conn) {
-
         $query = "SELECT * FROM " . $this->table . " WHERE id_profesor = :id_profesor";
         $stmt = $conn->prepare($query);
+
         $stmt->bindParam(':id_profesor', $this->id_profesor, PDO::PARAM_INT);
         $stmt->execute();
         

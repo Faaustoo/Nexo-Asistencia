@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Secundaria</title>
+    <link rel="stylesheet" href="App/Resources/CSS/principal.css">
+    <script src="App/Resources/JS/registroMateria.js" defer></script>
+</head>
+<body>
+<div class="login-container">
+    <div class="header-container">
+        <button id="cerrar-sesion" class="info-button">Cerrar sesión</button>
+        <button class="close-button">X</button>
+    </div>
+
+    <div class="main-content">
+        <div class="institucion-container">
+            <button type="button" id="crear-materia">Crear Materia</button> 
+            <label>Materias</label>
+            <div class="instituciones" id="lista-materias"></div>
+        </div>
+        <div class="contenido-container">
+            <div class="form-container" style="display: none;" id="formularioMateria">
+                <h3>Ingresar datos de las materias</h3>
+                <form id="formDatosMateria" method="post">
+                    <div class="info-form-container"> 
+                        <label for="nombre_materia">Nombre de la Materia:</label>
+                        <input type="text" id="nombre_materia" name="nombre_materia"> 
+                        <input type="hidden" name="institucion_id" id="institucion_id" value="">                        
+                        <button type='submit' id="enviar-materia">Enviar</button>
+                    </div>
+
+                    <div class ="cerrar"><button type="button" id="cerrar-materia">CERRAR</button></div>
+                    <div class="mensajes-exito">
+                        <div id="resultado"></div>
+                    </div>
+                    <div class="mensajes-error">
+                        <div id="error" class="error"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
