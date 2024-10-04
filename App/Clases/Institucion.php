@@ -102,5 +102,13 @@ class Institucion {
         $stmtCheck->execute();
         return $stmtCheck->fetchColumn() > 0; 
     }
+
+    public function eliminarInstitucion($conn, $nombre) {
+        $sql = "DELETE FROM " . $this->table . " WHERE nombre = :nombre"; 
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':nombre', $nombre, PDO::PARAM_STR);
+        return $stmt->execute();
+    }
+    
 }
 ?>

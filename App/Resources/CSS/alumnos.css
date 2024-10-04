@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    font-family: 'Vintage Style', cursive;
+    font-family:  'Press Start 2P', cursive;
     background-color: #b7b3fa;
     display: flex;
     justify-content: center;
@@ -31,6 +31,25 @@ body {
     border-bottom: 1px solid #000;
 }
 
+.atras a {
+    display: inline-block; /* Hace que el enlace se comporte como un bloque */
+    width: 80px;
+    height: 30px;
+    background-color: #ff0000; /* Color rojo */
+    border: 2px solid #000; /* Borde negro */
+    color: #000; /* Texto negro */
+    text-align: center; /* Centra el texto */
+    line-height: 30px; /* Centra verticalmente el texto */
+    text-decoration: none; /* Elimina el subrayado */
+    cursor: pointer; /* Cambia el cursor al pasar el mouse */
+    transition: background-color 0.3s ease; /* Efecto de transición suave */
+}
+
+.atras a:hover {
+    background-color: #de0909; /* Cambia a un tono más oscuro al pasar el mouse */
+    color: #fff; /* Cambia el texto a blanco en hover */
+}
+
 .button-container {
     border: 2px solid red;
     display: flex;
@@ -49,6 +68,8 @@ button {
     color: #000;
     background-color: #0ad217;
     transition: 0.5 ease;
+    font-family:  'Press Start 2P', cursive;
+    font-size: 8px;
 }
 
 #crear-alumno:hover {
@@ -144,10 +165,10 @@ button {
     color: lightcoral; /* Color de la letra al hacer hover */
 }
 
-.cerrar{
+.cerrar {
     display: flex;
     text-align: right;
-    height:65px;
+    height: 65px;
     width: 100%;
     box-sizing: border-box;
     justify-content: flex-end;
@@ -170,16 +191,51 @@ button {
 }
 
 .mensajes-error {
-    color:#000;
+    color: #000;
     box-shadow: 5px 5px 0px #000;
-    background-color:#ce1414;
+    background-color: #ce1414;
     text-align: center;
 }
 
-.mensajes-exito{
-    color:#000;
+.mensajes-exito {
+    color: #000;
     box-shadow: 5px 5px 0px #000;
-    background-color:#14ce27;
+    background-color: #14ce27;
     text-align: center;
+}
 
+
+.ingresar{
+    width: 80px;
+    height: 40px;
+}
+
+.tabla-alumnos,
+.tabla-asistencia {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.tabla-alumnos th,
+.tabla-asistencia th {
+    background-color: #4CAF50;
+    color: white;
+    border: 1px solid #000;
+    padding: 10px;
+    text-align: left;
+}
+
+/* Estilos para las celdas de las tablas */
+.tabla-alumnos td,
+.tabla-asistencia td {
+    font-size: 10px;
+    border: 1px solid #000; /* Borde de las celdas */
+    padding: 8px; /* Espaciado interno */
+}
+
+/* Estilo para el hover en filas de las tablas */
+.tabla-alumnos tr:hover,
+.tabla-asistencia tr:hover {
+    background-color: #f1f1f1; /* Color de fondo al pasar el mouse */
 }

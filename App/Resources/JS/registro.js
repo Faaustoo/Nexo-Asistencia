@@ -2,7 +2,6 @@ let formulario = document.getElementById('formularioRegistro');
 
 formulario.addEventListener('submit', function(e) {
     e.preventDefault(); 
-
     let datos = new FormData(formulario);
 
     fetch('registro.php', {
@@ -12,10 +11,8 @@ formulario.addEventListener('submit', function(e) {
     .then(res => res.json())
     .then(data => {
         console.log(data.mensaje);
-
         document.getElementById('resultado').innerHTML = '';
         document.getElementById('error').innerHTML = '';
-
         if (data.estado === 'exito') {
             document.getElementById('resultado').innerHTML = data.mensaje;
         } else if (data.estado === 'error') {
@@ -25,8 +22,7 @@ formulario.addEventListener('submit', function(e) {
                 document.getElementById('error').innerHTML = data.mensaje;
             }
         }
-    })
-    .catch(error => {
+    }).catch(error => {
         document.getElementById('error').innerHTML = 'Error al usar fetch: ' + error;
     });
 });

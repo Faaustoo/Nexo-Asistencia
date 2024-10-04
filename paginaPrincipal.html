@@ -5,35 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página Principal</title>
     <link rel="stylesheet" href="App/Resources/CSS/principal.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="login-container">
     <div class="header-container">
-        <button id="cerrar-sesion" class="info-button">Cerrar sesión</button>
-        <button class="close-button">X</button>
+        <div class="atras"><a href="index.html">X</a></div>
     </div>
 
     <div class="main-content">
         <div class="institucion-container">
             <button type="button" id="crear-institucion">CREAR INSTITUCIÓN</button>
+            <button type="button" id="eliminar-institucion">ELIMINAR INSTITUCIÓN</button>
             <label>Instituciones</label>
             <div class="instituciones" id="lista-instituciones"></div>
         </div>
         <div class="contenido-container">
-            <div class="form-container" style="display: none;" id="formularioInstitucion">
+            <div class="form-container" style="display: none;" id="formularioCrearInstitucion">
                 <h3>Ingresar datos de la institución</h3>
                 <form id="formDatosInstitucion" method="post">
                     <div class="info-form-container"> 
                         <label for="nombre_institucion">Nombre de la Institución:</label>
-                        <input type="text" id="nombre_institucion" name="nombre_institucion" >
+                        <input type="text" id="nombre_institucion" name="nombre_institucion">
                         <label for="direccion_institucion">Dirección de la Institución:</label>
                         <input type="text" id="direccion_institucion" name="direccion_institucion">
                         <label for="cue_institucion">CUE de la Institución:</label>
-                        <input type="text" id="cue_institucion" name="cue_institucion" >
+                        <input type="text" id="cue_institucion" name="cue_institucion">
                         <button type='submit' id="enviar-institucion">Enviar</button>
                     </div>
-
-                    <div class ="cerrar"><button type="button" id="cerrar-institucion">CERRAR</button></div>
+                    <div class="cerrar"><button type="button" id="cerrar-institucion">CERRAR</button></div>
                     <div class="mensajes-exito">
                         <div id="resultado"></div>
                     </div>
@@ -42,10 +42,29 @@
                     </div>
                 </form>
             </div>
+        
+            <div class="form-container" style="display: none;" id="formularioEliminarInstitucion">
+                <h3>Eliminar Institución</h3>
+                <form id="formDatosEliminarInstitucion" method="post">
+                    <div class="info-form-container"> 
+                        <label for="nombre_institucion">Nombre de la Institución:</label>
+                        <input type="text" id="nombre_institucion" name="nombre_institucion" >
+                        <button type='submit' id="eliminar-institucion-submit">Eliminar</button>
+                    </div>
+                    <div class="cerrar"><button type="button" id="cerrar-eliminar-institucion">CERRAR</button></div>
+                    <div class="mensajes-exito">
+                        <div id="resultado-eliminar"></div>
+                    </div>
+                    <div class="mensajes-error">
+                        <div id="error-eliminar" class="error"></div>
+                    </div>
+                </form>
+            </div>
         </div>
+        
     </div>
 </div>
 
-<script src="App\Resources\JS\principal.js"></script>
+<script src="App/Resources/JS/principal.js"></script>
 </body>
 </html>

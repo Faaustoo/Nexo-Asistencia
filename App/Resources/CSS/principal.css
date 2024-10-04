@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    font-family: 'Vintage Style', cursive;
+    font-family:  'Press Start 2P', cursive;
     background-color: #b7b3fa;
     display: flex;
     justify-content: center;
@@ -25,55 +25,47 @@ body {
     height: 50px;
     background-color: yellow;
     display: flex;
+    display: flex;
+    justify-content: end;
     align-items: center;
     padding: 0 10px;
     box-sizing: border-box;
     border-bottom: 1px solid #000;
 }
 
-.info-button {
+.atras a {
+    display: inline-block; /* Hace que el enlace se comporte como un bloque */
     width: 80px;
     height: 30px;
-    background-color: #de0909;
-    border: 2px solid #000;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    background-color: #ff0000; /* Color rojo */
+    border: 2px solid #000; /* Borde negro */
+    color: #000; /* Texto negro */
+    text-align: center; /* Centra el texto */
+    line-height: 30px; /* Centra verticalmente el texto */
+    text-decoration: none; /* Elimina el subrayado */
+    cursor: pointer; /* Cambia el cursor al pasar el mouse */
+    transition: background-color 0.3s ease; /* Efecto de transición suave */
 }
 
-.info-button:hover {
-    background-color: #ff0000;
+.atras a:hover {
+    background-color: #de0909; /* Cambia a un tono más oscuro al pasar el mouse */
+    color: #fff; /* Cambia el texto a blanco en hover */
 }
 
-.search-bar {
-    flex: 1; /* Ocupa el espacio disponible en el centro */
-    margin: 0 25px 0 200px;
-    height: 29px;
-    border: 2px solid #000;
-    box-sizing: border-box;
-}
 
-.close-button {
-    width: 30px;
-    height: 30px;
-    background-color: #de0909;
-    border: 2px solid #000;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
 
-.close-button:hover {
-    background-color: #ff0000;
-}
 
 .main-content {
     display: flex;
     flex: 1;
     padding: 10px;
     box-sizing: border-box;
-    overflow: hidden; /* Evita el desbordamiento horizontal */
+    overflow: hidden;
 }
 
-.institucion-container, .content-container, .form-container {
+.institucion-container,
+.content-container,
+.form-container {
     padding: 10px;
     background-color: #d3d3d3;
     border: 1px solid #000;
@@ -84,7 +76,7 @@ body {
     width: 250px;
     margin-right: 10px;
     overflow-y: auto;
-    flex-shrink: 0; 
+    flex-shrink: 0;
 }
 
 .content-container {
@@ -99,10 +91,11 @@ body {
     border: 2px solid #000;
     box-sizing: border-box;
 }
-.institucion-container{
+
+.institucion-container {
     border: 2px solid red;
     box-shadow: 5px 5px 0px #000;
-    display:flex;
+    display: flex;
     flex-direction: column;
     align-items: center;
 }
@@ -114,67 +107,66 @@ body {
     background-color: #0ad217;
     box-shadow: 5px 5px 0px #000;
     border: 2px solid #000;
-    font-family: 'Vintage Style', cursive;
-    transition: 3 ease;
+    font-family:  'Press Start 2P', cursive;
+    font-size: 10px;
+    transition: 0.3s;
+    color: #000; /* Texto negro */
 }
 
-.institucion-container button:hover{
+.institucion-container button:hover {
     box-shadow: -5px 5px 0px #000;
-    color: #03640a;
-    background-color: #0f3812;
+    color: #fff; /* Cambia a blanco al pasar el mouse */
+    background-color: #0f3812; /* Cambia a un verde oscuro al pasar el mouse */
 }
 
-.contenido-container{
+.contenido-container {
     display: flex;
     text-align: center;
     justify-content: center;
     width: 100%;
 }
 
-
 .form-container {
     width: 500px;
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center; 
-    align-items:center; 
+    justify-content: center;
+    align-items: center;
     text-align: left;
     border: 2px solid green;
-    padding: 10px; 
+    padding: 10px;
     box-sizing: border-box;
     box-shadow: 5px 5px 0px #000;
     overflow-y: auto;
 }
 
-
-.info-form-container{
-    height:300px;
+.info-form-container {
+    height: 300px;
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centra verticalmente el contenido */
-    align-items:flex-start; /* Centra horizontalmente el contenido */
+    justify-content: center;
+    align-items: flex-start;
     text-align: left;
-    padding: 10px; /* Espacio interior */
-    box-sizing: border-box; /* Incluye el padding y el border en el ancho total */
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 .info-form-container input {
     text-align: left;
     border: 2px solid red;
-    margin: 5px; /* Espaciado entre los inputs */
+    margin: 5px;
     width: 100%;
     padding: 10px;
     border: 1px solid #000;
     box-shadow: 5px 5px 0px #000;
     font-size: 16px;
-    color: #000;
+    color: #000; /* Texto negro */
     background-color: #fff;
     box-sizing: border-box;
     outline: none;
     transition: 0.3s ease;
-
 }
 
 .info-form-container input:focus {
@@ -187,34 +179,36 @@ body {
     display: block;
     font-size: 14px;
     margin-top: 10px;
-    color: #000;
+    color: #000; /* Texto negro */
     text-align: left;
+    font-size: 10px;
 }
 
 .form-container button {
     width: 100%;
     height: 50px;
     padding: 10px;
-    margin: 10px 0px 0 0px;
-    background-color:  #b7b3fa;
+    margin: 10px 0 0 7px;
+    background-color: #b7b3fa;
     box-shadow: 5px 5px 0px #000;
     border: 1px solid #000;
-    color: #000;
+    color: #000; /* Texto negro */
     font-size: 16px;
-    font-family: 'Vintage Style', cursive;
+    font-family:  'Press Start 2P', cursive;
+    font-size: 12px;
     cursor: pointer;
     transition: 0.5s;
 }
 
 .form-container button:hover {
-    background-color: #5727c6;
-    color: #000;
+    background-color: #5727c6; /* Cambia a un morado oscuro al pasar el mouse */
+    color: #fff; /* Cambia a blanco al pasar el mouse */
 }
 
-.cerrar{
+.cerrar {
     display: flex;
     text-align: right;
-    height:65px;
+    height: 65px;
     width: 100%;
     box-sizing: border-box;
     justify-content: flex-end;
@@ -225,32 +219,37 @@ body {
     height: 40px;
     background-color: #de0909;
     border: 1px solid #000;
-    color: #000;
-    font-family: 'Vintage Style', cursive;
+    color: #000; /* Texto negro */
+    font-family:  'Press Start 2P', cursive;
+    font-size: 8px;
     cursor: pointer;
     transition: 0.5s;
 }
 
 .cerrar button:hover {
-    background-color: #ff0000;
-    color: #000;
+    background-color: #ff0000; /* Cambia a rojo al pasar el mouse */
+    color: #fff; /* Cambia a blanco al pasar el mouse */
 }
 
 .mensajes-error {
-    color:#000;
+    color: #000; /* Texto negro */
     box-shadow: 5px 5px 0px #000;
-    background-color:#ce1414;
+    background-color: #ce1414;
     text-align: center;
+    font-family:  'Press Start 2P', cursive;
+    font-size: 10px;
 }
 
-.mensajes-exito{
-    color:#000;
+.mensajes-exito {
+    color: #000; /* Texto negro */
     box-shadow: 5px 5px 0px #000;
-    background-color:#14ce27;
+    background-color: #14ce27;
     text-align: center;
-
+    font-family:  'Press Start 2P', cursive;
+    font-size: 10px;
 }
-.instituciones  a {
+
+.instituciones a {
     display: inline-block;
     margin: 5px 10px 10px;
     width: 150px;
@@ -260,14 +259,20 @@ body {
     border: 2px solid #000;
     text-align: center;
     line-height: 50px;
-    font-family: 'Vintage Style', cursive;
+    font-family:  'Press Start 2P', cursive;
+    font-size: 10px;
     text-decoration: none;
-    color: #000;
+    color: #000; /* Texto negro */
     transition: 0.3s ease;
 }
 
 .instituciones a:hover {
     box-shadow: -5px 5px 0px #000;
-    color: #03640a;
-    background-color: #0f3812;
+    color: #fff; /* Cambia a blanco al pasar el mouse */
+    background-color: #0f3812; /* Cambia a un verde oscuro al pasar el mouse */
+}
+
+.atras {
+    font-family:  'Press Start 2P', cursive;
+    font-size: 10px;
 }

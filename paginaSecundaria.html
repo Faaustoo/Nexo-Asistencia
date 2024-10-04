@@ -5,29 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página Secundaria</title>
     <link rel="stylesheet" href="App/Resources/CSS/principal.css">
-    <script src="App/Resources/JS/registroMateria.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="login-container">
     <div class="header-container">
-        <button id="cerrar-sesion" class="info-button">Cerrar sesión</button>
-        <button class="close-button">X</button>
+        <div class="atras"><a href="paginaPrincipal.html">Atras</a></div>
+       
     </div>
 
     <div class="main-content">
         <div class="institucion-container">
-            <button type="button" id="crear-materia">Crear Materia</button> 
+            <button type="button" id="crear-materia">CREAR MATERIA</button> 
+            <button type="button" id="eliminar-materia">ELIMINAR MATERIA</button>
             <label>Materias</label>
             <div class="instituciones" id="lista-materias"></div>
         </div>
         <div class="contenido-container">
             <div class="form-container" style="display: none;" id="formularioMateria">
-                <h3>Ingresar datos de las materias</h3>
+                <p>Ingresar datos de las materias</p>
                 <form id="formDatosMateria" method="post">
                     <div class="info-form-container"> 
                         <label for="nombre_materia">Nombre de la Materia:</label>
                         <input type="text" id="nombre_materia" name="nombre_materia"> 
-                        <input type="hidden" name="institucion_id" id="institucion_id" value="">                        
+                        <input type="hidden" name="id_institucion" id="id_institucion" value="">                        
                         <button type='submit' id="enviar-materia">Enviar</button>
                     </div>
 
@@ -40,8 +41,27 @@
                     </div>
                 </form>
             </div>
+            <div class="form-container" style="display: none;" id="formularioEliminarMateria">
+                <h3>Eliminar Materia</h3>
+                <form id="formDatosEliminarMateria" method="post">
+                    <div class="info-form-container"> 
+                        <label for="nombre_materia">Nombre de la materia:</label>
+                        <input type="text" id="nombre_materia_eliminar" name="nombre_materia">
+                        <button type='submit' id="enviar-eliminar">Eliminar</button>
+                    </div>
+                    <div class="cerrar"><button type="button" id="cerrar-eliminar">CERRAR</button></div>
+                    <div class="mensajes-exito">
+                        <div id="resultado-eliminar"></div>
+                    </div>
+                    <div class="mensajes-error">
+                        <div id="error-eliminar" class="error"></div>
+                    </div>
+                </form>
+            </div>
+            
         </div>
     </div>
 </div>
+<script src="App/Resources/JS/registroMateria.js" ></script>
 </body>
 </html>

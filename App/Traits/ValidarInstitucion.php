@@ -60,6 +60,29 @@ trait ValidarInstitucion {
         return $errores;
     }
 
+    public function obtenerDatosEliminar() {
+        $datos = [];
+        if (isset($_POST['nombre_institucion'])) {
+            $datos['nombre_institucion'] = $this->clean_input($_POST['nombre_institucion']);
+        } else {
+            $datos['nombre_institucion'] = '';
+        }
+        
+        return $datos; 
+    }
     
-}
-?>
+    public function validarDatosEliminar($data) {
+        $letrasEspacios = "/^[a-zA-Z\s]+$/";
+        $errores = []; 
+        
+        if (empty($data['nombre_institucion'])) {
+            $errores[] = "El nombre es obligatorio.";
+        } elseif (!preg_match($letrasEspacios, $data['nombre_institucion'])) {
+            $errores[] = "El nombre solo puede contener letras y espacios.";
+        }
+    
+        return $errores; 
+    }
+    
+}    
+

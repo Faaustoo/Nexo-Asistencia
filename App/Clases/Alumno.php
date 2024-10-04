@@ -36,7 +36,7 @@ class Alumno extends Persona {
     public function getDni() {
         return $this->dni;
     }
- 
+
     public function getFechaNacimiento() {
         return $this->fecha_nacimiento;
     }
@@ -76,17 +76,16 @@ class Alumno extends Persona {
         $id_materia = $this->getIdMateria();
 
         $query = "INSERT INTO alumnos (nombre, apellido, dni, email, fecha_nacimiento, id_materia) 
-                  VALUES (:nombre, :apellido, :dni, :email, :fecha_nacimiento, :id_materia)";
+                VALUES (:nombre, :apellido, :dni, :email, :fecha_nacimiento, :id_materia)";
         
         $stmt = $conn->prepare($query);
         
-        // Vincular los parámetros
         $stmt->bindParam(':nombre', $nombre);
         $stmt->bindParam(':apellido', $apellido);
         $stmt->bindParam(':dni', $dni);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':fecha_nacimiento', $fecha_nacimiento);
-        $stmt->bindParam(':id_institucion', $id_materia);
+        $stmt->bindParam(':id_materia', $id_materia);
     
     
         if ($stmt->execute()) {
@@ -95,8 +94,34 @@ class Alumno extends Persona {
         }
         return false;
     }
+
+    public function existe($data, $conn) {
+        $errores = [];
     
-  
+        $query = "SELECT * FROM alumnos WHERE dni = :dni OR email = :email";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':dni', $data['dni']);
+        $stmt->bindParam(':email', $data['email']);
+        $stmt->execute();
+    
+        if ($stmt->rowCount() > 0) {
+            $errores[] = "El DNI o el correo electrónico ya existen en la base de datos.";
+        }
+    
+        return $errores;
+    }
+
+    public function obtenerAlumnosPorMateria($id_materia, $conn) {
+        $query = "SELECT * FROM alumnos WHERE id_materia = :id_materia";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':id_materia', $id_materia);
+        $stmt->execute();
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    
+    
 }
 
 

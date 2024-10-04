@@ -13,14 +13,12 @@ trait ValidarMateria {
     public function obtenerDatos() {
         $datos = [];
         
-        // Obtener y limpiar el nombre de la materia
         if (isset($_POST['nombre_materia'])) {
             $datos['nombre_materia'] = $this->clean_input($_POST['nombre_materia']);
         } else {
             $datos['nombre_materia'] = '';
         }
 
-        // Obtener y limpiar el ID de la institución
         if (isset($_POST['id_institucion'])) {
             $datos['id_institucion'] = $this->clean_input($_POST['id_institucion']);
         } else {
@@ -35,7 +33,6 @@ trait ValidarMateria {
         $letrasEspaciosNumeros = "/^[a-zA-Z0-9\s]+$/";
         $numeros = "/^[0-9]+$/";
 
-        // Validar el nombre de la materia
         if (empty($data['nombre_materia'])) {
             $errores[] = "El nombre es obligatorio.";
         } elseif (!preg_match($letrasEspaciosNumeros, $data['nombre_materia'])) {
@@ -49,6 +46,30 @@ trait ValidarMateria {
         }
 
         return $errores;
+    }
+
+    public function obtenerDatosEliminar() {
+        $datos = [];
+        if (isset($_POST['nombre_materia'])) {
+            $datos['nombre_materia'] = $this->clean_input($_POST['nombre_materia']);
+        } else {
+            $datos['nombre_materia'] = '';
+        }
+        
+        return $datos; 
+    }
+    
+    public function validarDatosEliminar($data) {
+        $letrasEspaciosNumeros = "/^[a-zA-Z0-9\s]+$/";
+        $errores = []; 
+        
+        if (empty($data['nombre_materia'])) {
+            $errores[] = "El nombre es obligatorio.";
+        } elseif (!preg_match($letrasEspaciosNumeros, $data['nombre_materia'])) {
+            $errores[] = "El nombre solo puede contener letras, espacios y números.";
+        }
+    
+        return $errores; 
     }
 }
 ?>

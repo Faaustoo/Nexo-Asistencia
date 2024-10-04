@@ -1,15 +1,20 @@
 body {
     margin: 0;
-    font-family: 'Vintage Style', cursive;
+    font-family:  'Press Start 2P', cursive;
     background-color: #b7b3fa;
     background-size: cover;
+    font-size: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     overflow: hidden;
 }
-
+h1{
+    font-family: 'Press Start 2P', cursive;
+    font-size: 80px; /* Tamaño del texto */
+    margin-right: 200px;
+}
 .login-container {
     background-color: #fff; 
     padding: 30px;
@@ -44,6 +49,7 @@ label {
     display: block;
     font-size: 14px;
     margin-bottom: 5px;
+    margin-top: 10px;;
     color: #000;
     text-align: left;
 }
@@ -74,7 +80,7 @@ button {
     border: 1px solid #000;
     color: #000;
     font-size: 16px;
-    font-family: 'Vintage Style', cursive;
+    font-family:  'Press Start 2P', cursive;
     cursor: pointer;
     transition: 0.5s;
 }
@@ -104,11 +110,14 @@ a:hover {
 
 
 .mensajes-error {
+    width: auto;
+    height: auto;
     color:#000;
     box-shadow: 5px 5px 0px #000;
     background-color:#ce1414;
-       margin-top: 15px; 
+    margin-top: 15px; 
     text-align: center;
+    font-size: 12px;
 }
 
 .mensajes-exito{
