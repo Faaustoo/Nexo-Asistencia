@@ -80,3 +80,34 @@ function editarAlumno(idAlumno) {
         console.error('Error al obtener datos del alumno:', error);
     });
 }
+
+
+// Selecciona el checkbox "seleccionar todo" y los checkboxes de asistencia
+const seleccionarTodoCheckbox = document.getElementById('seleccionar-todo');
+const checkboxesAsistencia = document.querySelectorAll('.asistencia-checkbox');
+
+// Agrega un evento al checkbox "seleccionar todo"
+seleccionarTodoCheckbox.addEventListener('change', function() {
+    checkboxesAsistencia.forEach(checkbox => {
+        checkbox.checked = seleccionarTodoCheckbox.checked; // Marca o desmarca todos
+    });
+});
+
+
+// Agregar eventos a los botones de editar y eliminar
+                const editarBtns = document.querySelectorAll('.editar-btn');
+                const eliminarBtns = document.querySelectorAll('.eliminar-btn');
+
+                editarBtns.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const idAlumno = this.getAttribute('data-id');
+                        editarAlumno(idAlumno);
+                    });
+                });
+
+                eliminarBtns.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const idAlumno = this.getAttribute('data-id');
+                        eliminarAlumno(idAlumno);
+                    });
+                });

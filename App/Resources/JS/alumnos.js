@@ -8,7 +8,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const crearAlumno = document.getElementById('crear-alumno'); 
     const formularioAlumnoDiv = document.getElementById('formularioAlumno'); 
     const cerrarAlumno = document.getElementById('cerrar-alumno');
-
+    const formularioEditar=document.getElementById('formularioeditarAlumno');
+    const botonCerrarEditar= document.getElementById('cerrar-alumno-editar');
+    const formularioEliminar= document.getElementById('formularioAlumnoEliminar');
+    const botonCerrarEliminar= document.getElementById('cerrar-alumno-eliminar');
+    const botonEnviarEditar= document.getElementById('enviar-alumno-editar');
+   
+   
     listaAlumnos.addEventListener('click', function () {
     asistenciaDiv.style.display = 'none';
     condicionAlumnosDiv.style.display = 'none';
@@ -22,6 +28,8 @@ document.addEventListener('DOMContentLoaded', function () {
         condicionAlumnosDiv.style.display = 'none';
         asistenciaDiv.style.display = 'block';
         formularioAlumnoDiv.style.display = 'none'; 
+        formularioEditar.style.display = 'none';
+        formularioEliminar.style.display = 'none';
         cargarAlumnosAsistencia();
     });
 
@@ -31,6 +39,9 @@ document.addEventListener('DOMContentLoaded', function () {
         asistenciaDiv.style.display = 'none';
         condicionAlumnosDiv.style.display = 'block';
         formularioAlumnoDiv.style.display = 'none'; 
+        formularioEditar.style.display = 'none';
+        listaAlumnosDiv.style.display = 'none';
+        formularioEliminar.style.display = 'none';
     });
 
     
@@ -48,19 +59,16 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
+
     let formulario = document.getElementById('formDatosAlumno');
     formulario.addEventListener('submit', function (e) {
         e.preventDefault(); 
         const urlParams = new URLSearchParams(window.location.search);
         const idMateria = urlParams.get('id'); 
-        
-    
         let datos = new FormData(formulario); 
         datos.append('id_materia', idMateria); 
-
         document.getElementById('resultado').innerHTML = ''; 
         document.getElementById('error').innerHTML = ''; 
-
     fetch('registroAlumno.php', { 
         method: 'POST', 
         body: datos 
@@ -86,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
     
+
 function cargarAlumnos() {
     const url = new URLSearchParams(window.location.search);
     const idMateria = url.get('id'); 
@@ -127,8 +136,8 @@ function cargarAlumnos() {
                             <td>${alumno.email}</td>
                             <td>${alumno.fecha_nacimiento}</td>
                             <td>
-                                <button class="editar-btn" data-id="${alumno.id}">Editar</button>
-                                <button class="eliminar-btn" data-id="${alumno.id}">Eliminar</button>
+                                <button class="editar-btn" data-id="${alumno.id_alumno}">Editar</button>
+                                <button class="eliminar-btn" data-id="${alumno.id_alumno}">Eliminar</button>
                             </td>
                         </tr>
                     `;
@@ -140,6 +149,23 @@ function cargarAlumnos() {
                 `;
 
                 listaAlumnos.innerHTML = tablaHTML;
+
+                   // Añadir funcionalidad a los botones de Editar y Eliminar
+                document.querySelectorAll('.editar-btn').forEach(btn => {
+                    btn.addEventListener('click', (event) => {
+                        const alumnoId = event.target.getAttribute('data-id');
+
+                        editarAlumno(alumnoId);
+                        cargarAlumnos();
+                    });
+                });
+
+                document.querySelectorAll('.eliminar-btn').forEach(btn => {
+                    btn.addEventListener('click', (event) => {
+                        const alumnoId = event.target.getAttribute('data-id');
+                        eliminarAlumno(alumnoId);
+                    });
+                });
             } else {
                 listaAlumnos.innerHTML = '<p>No hay alumnos disponibles.</p>';
             }
@@ -151,7 +177,7 @@ function cargarAlumnos() {
         console.error('Error al obtener alumnos:', error);
     });
 }
-
+    
     
     
     function cargarAlumnosAsistencia() {
@@ -191,7 +217,7 @@ function cargarAlumnos() {
                                 <td>${alumno.apellido}</td>
                                 <td>${alumno.dni}</td>
                                 <td>
-                                    <input type="checkbox" class="asistencia-checkbox" data-id="${alumno.id}">
+                                    <input type="checkbox" class="asistencia-checkbox" data-id="${alumno.id_alumno}">
                                 </td>
                             </tr>
                         `;
@@ -214,4 +240,72 @@ function cargarAlumnos() {
         });
     }
 
+    function editarAlumno(alumnoId) {
+        formularioEditar.style.display = 'block';
+        listaAlumnosDiv.style.display = 'none';
+    
+        const url = new URLSearchParams(window.location.search);
+        const idMateria = url.get('id');
+    
+        // Limpiar mensajes de error anteriores
+        document.getElementById('error').innerHTML = '';
+        document.getElementById('resultado').innerHTML = '';
+    
+        // Agregar el listener para el envío del formulario
+        botonEnviarEditar.addEventListener('click', (event) => {
+            event.preventDefault(); // Prevenir el envío por defecto del formulario
+    
+            const formulario = document.getElementById('formDatosEditarAlumno');
+            const datos = new FormData(formulario);
+            datos.append('id_materia', idMateria); // Asegúrate de agregar idMateria aquí
+            datos.append('id_alumno', alumnoId);
+    
+            fetch('editarAlumno.php', {
+                method: 'POST',
+                body: datos
+            })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+                return res.json();
+            })
+            .then(data => {
+                console.log(data);
+                document.getElementById('resultado-editar').innerHTML = '';
+                document.getElementById('error-editar').innerHTML = '';
+                if (data.estado === 'exito') {
+                    document.getElementById('resultado-editar').innerHTML = data.mensaje;
+                } else if (data.estado === 'error') {
+                    if (data.errores) {
+                        document.getElementById('error-editar').innerHTML = data.errores.join('<br>');
+                    } 
+                }
+        })
+            .catch(error => {
+                console.error('Error al editar el alumno:', error);
+            });
+        });
+    
+        botonCerrarEditar.addEventListener('click', function () {
+            formularioEditar.style.display = 'none';
+            listaAlumnosDiv.style.display = 'block';
+        });
+
+    }
+    
+    
+    function eliminarAlumno(id) {
+
+        formularioEliminar.style.display = 'block';
+        listaAlumnosDiv.style.display = 'none';
+        if ( botonCerrarEliminar.addEventListener('click', function () {
+            formularioEliminar.style.display = 'none';
+            listaAlumnosDiv.style.display = 'block';
+            console.log(`Cerrado`);
+            }));
+        console.log(`Editar alumno con ID: ${id}`);
+
+    }
+  
 });

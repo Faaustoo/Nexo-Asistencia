@@ -45,6 +45,9 @@ class Alumno extends Persona {
         return $this->id_materia;
     }
 
+    public function setIdAlumno($id_alumno) {
+        $this->id_alumno= $id_alumno;
+    }
     public function setNombre($nombre) {
         $this->nombre = $nombre; 
     }
@@ -118,6 +121,31 @@ class Alumno extends Persona {
         $stmt->execute();
     
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public function editarAlumno($id_alumno, $conn) {
+        $nombre = $this->getNombre();
+        $apellido = $this->getApellido();
+        $dni = $this->getDni();
+        $email = $this->getEmail();
+        $fecha_nacimiento = $this->getFechaNacimiento();
+        $id_materia = $this->getIdMateria();
+    
+        $query = "UPDATE alumnos SET nombre = :nombre, apellido = :apellido, 
+                  dni = :dni, email = :email, fecha_nacimiento = :fecha_nacimiento, 
+                  id_materia = :id_materia 
+                  WHERE id_alumno = :id_alumno";
+    
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':nombre', $nombre);
+        $stmt->bindParam(':apellido', $apellido);
+        $stmt->bindParam(':dni', $dni);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':fecha_nacimiento', $fecha_nacimiento);
+        $stmt->bindParam(':id_materia', $id_materia);
+        $stmt->bindParam(':id_alumno', $id_alumno); // Corregido: Debe ser id_alumno
+    
+        return $stmt->execute();
     }
     
     

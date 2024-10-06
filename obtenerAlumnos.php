@@ -6,15 +6,13 @@ $database = new Database();
 $conn = $database->connect();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Obtener el ID de materia del POST
-    $id_materia = $_POST['id_materia'] ?? null;
+    $id_materia = $_POST['id_materia'];
 
-    // Verificar si se proporcionó un ID de materia
+    
     if ($id_materia) {
         $alumno = new Alumno('', '', '', '', '', ''); 
         $alumnos = $alumno->obtenerAlumnosPorMateria($id_materia, $conn);
         
-        // Comprobar si se encontraron alumnos
         if ($alumnos) {
             echo json_encode(['estado' => 'exito', 'alumnos' => $alumnos]);
         } else {

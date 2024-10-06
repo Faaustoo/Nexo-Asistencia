@@ -10,19 +10,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = $alumno->obtenerDatos();
     $erroresValidar = $alumno->validarDatos($data);
 
-    // Captura el id_materia desde los datos recibidos
-    $id_materia = $_POST['id_materia'] ?? null; // Usamos el operador null coalescing
-
     if (empty($erroresValidar)) {
-        // Asignar los valores a la instancia del alumno
         $alumno->setNombre($data['nombre']);
         $alumno->setApellido($data['apellido']);
         $alumno->setDni($data['dni']);
         $alumno->setEmail($data['email']);
         $alumno->setFechaNacimiento($data['fecha_nacimiento']);
-        $alumno->setIdMateria($id_materia); // Ahora usamos el id_materia obtenido
+        $alumno->setIdMateria($data['id_materia']); 
 
-        // Verificar si el alumno ya existe
         $erroresExistencia = $alumno->existe(['dni' => $data['dni'],'email' => $data['email']], $conn);
 
         if (!empty($erroresExistencia)) {
@@ -30,7 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        // Crear el alumno
         if ($alumno->crearAlumno($conn)) { 
             echo json_encode(['estado' => 'exito', 'mensaje' => 'Alumno registrado con éxito.']);
         } else {

@@ -224,6 +224,7 @@ button {
     border: 1px solid #000;
     padding: 10px;
     text-align: left;
+    font-size: 10px;
 }
 
 /* Estilos para las celdas de las tablas */
