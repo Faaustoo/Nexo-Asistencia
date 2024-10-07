@@ -115,13 +115,15 @@ class Alumno extends Persona {
     }
 
     public function obtenerAlumnosPorMateria($id_materia, $conn) {
-        $query = "SELECT * FROM alumnos WHERE id_materia = :id_materia";
+        // Modifica la consulta para ordenar por apellido
+        $query = "SELECT * FROM alumnos WHERE id_materia = :id_materia ORDER BY apellido ASC"; 
         $stmt = $conn->prepare($query);
         $stmt->bindParam(':id_materia', $id_materia);
         $stmt->execute();
     
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
     
     public function editarAlumno($id_alumno, $conn) {
         $nombre = $this->getNombre();
@@ -148,7 +150,15 @@ class Alumno extends Persona {
         return $stmt->execute();
     }
     
-    
+    public function eliminarAlumno($id_alumno, $conn) {
+        $query = "DELETE FROM alumnos WHERE id_alumno = :id_alumno"; 
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':id_alumno', $id_alumno);
+        if ($stmt->execute()) {
+            return $stmt->rowCount() > 0; 
+        }
+        return false;
+    }
     
 }
 

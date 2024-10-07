@@ -107,5 +107,16 @@ trait ValidarAlumno {
         return $errores;
     }
     
+    public function obtenerDatosEliminar() {
+        $datos = [];
+        if (isset($_POST['id_alumno'])) {
+            $datos['id_alumno'] = $this->clean_input($_POST['id_alumno']);
+        } else {
+            $datos['id_alumno'] = '';
+        }
+        
+        return $datos; 
+    }
+
 }
 ?>

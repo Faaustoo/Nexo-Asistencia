@@ -19,9 +19,10 @@
     </div>
     <div class="contenido-container">
         <div id="Listalumnos" style="display: none;">
-            <button class="ingresar" type="button" id="crear-alumno">Crear Alumnos</button>
+
             <p>Sección lista de alumnos</p>
             <div class="instituciones" id="lista-Alumnos"></div>
+            <button class="ingresar" type="button" id="crear-alumno">Crear Alumnos</button>
         </div>
 
         <div class="form-container" style="display: none;" id="formularioAlumno">
@@ -108,29 +109,28 @@
         </div>
 
         <div class="form-container" style="display: none;" id="formularioAlumnoEliminar">
-            <h3>Ingresar Dni del alumno a eliminar:</h3>
             <form id="formDatosEliminarAlumno" method="post">
                 <div class="info-form-container">
                     <div class="fila">
                         <div class="columna">
-                            <label for="dni">DNI:</label>
-                            <input type="text" id="dni" name="dni" >
+                            <p>¿Estás seguro?</p>
+                            <button type="button" id="si">Sí</button>
+                            <button type="button" id="no">No</button>
                         </div>
                     </div>
-                   
-                    <button type="submit" id="enviar-alumno-eliminar">Enviar</button>
                     <div class="cerrar">
                         <button type="button" id="cerrar-alumno-eliminar">CERRAR</button>
                     </div>
                     <div class="mensajes-exito">
-                        <div id="resultado"></div>
+                        <div id="resultado-eliminar"></div>
                     </div>
                     <div class="mensajes-error">
-                        <div id="error" class="error"></div>
+                        <div id="error-eliminar" class="error"></div>
                     </div>
                 </div>
             </form>
         </div>
+        
     
         
 
@@ -139,9 +139,8 @@
         </div>
         
         <div id="asistencia-Alumnos" style="display: none;">
+            
             <div id="tomar-Asistencia"></div>
-            <button class="ingresar" type="button" onclick="seleccionarTodos()">Seleccionar Todos</button>
-
         </div>
     </div>
 </div>

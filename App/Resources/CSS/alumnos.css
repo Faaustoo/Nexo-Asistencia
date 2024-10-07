@@ -63,7 +63,37 @@ button {
     width: 80px;  /* Reducido */
 }
 
+.eliminar-btn{
+    border: 2px solid black;
+    color: #000;
+    background-color: #ff0000;
+    transition: 0.5 ease;
+    font-family:  'Press Start 2P', cursive;
+    font-size: 8px;
+}
+
+.eliminar-btn:hover{
+    background-color: #940f0f;
+    color: #f1f1f1;
+}
+.editar-btn {
+    border: 2px solid black;
+    color: #000;
+    background-color: #e8f808;
+    transition: 0.5 ease;
+    font-family:  'Press Start 2P', cursive;
+    font-size: 8px;
+}
+.editar-btn:hover{
+    background-color: #7d8604;
+    color: #f1f1f1;
+}
+
+
+
 #crear-alumno {
+
+    margin-top: 10px;
     border: 2px solid black;
     color: #000;
     background-color: #0ad217;
@@ -72,10 +102,11 @@ button {
     font-size: 8px;
 }
 
-#crear-alumno:hover {
+#crear-alumno:hover{
     background-color: #0f3812;
-    color: #03640a;
+    color: #f1f1f1;
 }
+
 
 .contenido-container {
     border: #03640a 2px solid;
@@ -206,15 +237,24 @@ button {
 
 
 .ingresar{
-    width: 80px;
+    width: 90px;
     height: 40px;
+    border: 2px solid black;
+    color: #000;
+    background-color: #b7b3fa;
+    transition: 0.5 ease;
+    font-family:  'Press Start 2P', cursive;
+    font-size: 8px;
+}
+.ingresar:hover{
+    color:#f1f1f1;
+    background-color:#5d56f4;
 }
 
 .tabla-alumnos,
 .tabla-asistencia {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
 }
 
 .tabla-alumnos th,
@@ -239,4 +279,42 @@ button {
 .tabla-alumnos tr:hover,
 .tabla-asistencia tr:hover {
     background-color: #f1f1f1; /* Color de fondo al pasar el mouse */
+}
+.todos{
+    margin-top: 15px;
+    margin-left:100vh ;
+    width: 245px;
+    height: 40px;
+    border: 2px solid black;
+    color: #000;
+    background-color: #b7b3fa;
+    transition: 0.5 ease;
+    font-family:  'Press Start 2P', cursive;
+    font-size: 8px;
+}
+.todos:hover{
+    color:#f1f1f1;
+    background-color:#5d56f4;
+}
+.todos:hover{
+    color:#f1f1f1;
+    background-color:#5d56f4;
+}
+
+#guardarAsistencia{
+    margin-top: 15px;
+    margin-left:100vh ;
+    width: 245px;
+    height: 40px;
+    border: 2px solid black;
+    color: #000;
+    background-color: #0ad217;
+    transition: 0.5 ease;
+    font-family:  'Press Start 2P', cursive;
+    font-size: 8px;
+}
+
+#guardarAsistencia:hover{
+    color:#f1f1f1;
+    background-color:#0f3812;
 }

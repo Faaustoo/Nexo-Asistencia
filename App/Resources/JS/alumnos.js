@@ -10,9 +10,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const cerrarAlumno = document.getElementById('cerrar-alumno');
     const formularioEditar=document.getElementById('formularioeditarAlumno');
     const botonCerrarEditar= document.getElementById('cerrar-alumno-editar');
+    const botonEnviarEditar= document.getElementById('enviar-alumno-editar');
     const formularioEliminar= document.getElementById('formularioAlumnoEliminar');
     const botonCerrarEliminar= document.getElementById('cerrar-alumno-eliminar');
-    const botonEnviarEditar= document.getElementById('enviar-alumno-editar');
+    const botonEnviarEliminar= document.getElementById('enviar-alumno-eliminar');
+
    
    
     listaAlumnos.addEventListener('click', function () {
@@ -116,8 +118,8 @@ function cargarAlumnos() {
                     <table class="tabla-alumnos">
                     <thead>
                         <tr>
-                            <th>Nombre</th>
                             <th>Apellido</th>
+                            <th>Nombre</th>
                             <th>DNI</th>
                             <th>Email</th>
                             <th>Fecha de nacimiento</th>
@@ -130,8 +132,8 @@ function cargarAlumnos() {
                 data.alumnos.forEach(alumno => {
                     tablaHTML += `
                         <tr>
-                            <td>${alumno.nombre}</td>
                             <td>${alumno.apellido}</td>
+                            <td>${alumno.nombre}</td>
                             <td>${alumno.dni}</td>
                             <td>${alumno.email}</td>
                             <td>${alumno.fecha_nacimiento}</td>
@@ -154,16 +156,14 @@ function cargarAlumnos() {
                 document.querySelectorAll('.editar-btn').forEach(btn => {
                     btn.addEventListener('click', (event) => {
                         const alumnoId = event.target.getAttribute('data-id');
-
                         editarAlumno(alumnoId);
-                        cargarAlumnos();
                     });
                 });
 
                 document.querySelectorAll('.eliminar-btn').forEach(btn => {
                     btn.addEventListener('click', (event) => {
                         const alumnoId = event.target.getAttribute('data-id');
-                        eliminarAlumno(alumnoId);
+                        eliminarAlumno(alumnoId)
                     });
                 });
             } else {
@@ -199,6 +199,7 @@ function cargarAlumnos() {
 
                 if (Array.isArray(data.alumnos) && data.alumnos.length > 0) {
                     let tablaHTML = `
+                     <button class="todos" type="button" id="seleccionar-todos">Seleccionar Todos</button>
                     <table class="tabla-asistencia">
                     <thead>
                         <tr>
@@ -226,8 +227,19 @@ function cargarAlumnos() {
                             </tbody>
                         </table>
                         <button id="guardarAsistencia">Guardar Asistencia</button>
+                       
                     `;
                     tomarAsistencia.innerHTML = tablaHTML;
+                    // Agregar evento al botón "Seleccionar Todos"
+                const seleccionarTodosBtn = document.getElementById('seleccionar-todos');
+                seleccionarTodosBtn.addEventListener('click', () => {
+                    const checkboxes = document.querySelectorAll('.asistencia-checkbox');
+                    const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+                    
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = !allChecked; // Marcar o desmarcar
+                    });
+                });
                 } else {
                     tomarAsistencia.innerHTML = '<p>No hay alumnos disponibles.</p>';
                 }
@@ -248,28 +260,21 @@ function cargarAlumnos() {
         const idMateria = url.get('id');
     
         // Limpiar mensajes de error anteriores
-        document.getElementById('error').innerHTML = '';
-        document.getElementById('resultado').innerHTML = '';
+        document.getElementById('error-editar').innerHTML = '';
+        document.getElementById('resultado-editar').innerHTML = '';
     
         // Agregar el listener para el envío del formulario
         botonEnviarEditar.addEventListener('click', (event) => {
-            event.preventDefault(); // Prevenir el envío por defecto del formulario
-    
-            const formulario = document.getElementById('formDatosEditarAlumno');
-            const datos = new FormData(formulario);
-            datos.append('id_materia', idMateria); // Asegúrate de agregar idMateria aquí
+            event.preventDefault(); 
+            const datos = new FormData(formDatosEditarAlumno);
             datos.append('id_alumno', alumnoId);
+            datos.append('id_materia', idMateria);
     
             fetch('editarAlumno.php', {
                 method: 'POST',
                 body: datos
             })
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error('Error en la respuesta del servidor');
-                }
-                return res.json();
-            })
+            .then(res => res.json())
             .then(data => {
                 console.log(data);
                 document.getElementById('resultado-editar').innerHTML = '';
@@ -294,18 +299,51 @@ function cargarAlumnos() {
 
     }
     
-    
-    function eliminarAlumno(id) {
-
+    function eliminarAlumno(alumnoId) {
         formularioEliminar.style.display = 'block';
         listaAlumnosDiv.style.display = 'none';
-        if ( botonCerrarEliminar.addEventListener('click', function () {
+    
+        document.getElementById('error-eliminar').innerHTML = '';
+        document.getElementById('resultado-eliminar').innerHTML = '';
+    
+        document.getElementById('si').addEventListener('click', (event) => {
+            event.preventDefault();
+    
+            const datos = new FormData();
+            datos.append('id_alumno', alumnoId);
+    
+            fetch('eliminarAlumno.php', {
+                method: 'POST',
+                body: datos
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                document.getElementById('resultado-eliminar').innerHTML = '';
+                document.getElementById('error-eliminar').innerHTML = '';
+    
+                if (data.estado === 'exito') {
+                    document.getElementById('resultado-eliminar').innerHTML = data.mensaje;
+                } else if (data.estado === 'error' && data.errores) {
+                    document.getElementById('error-eliminar').innerHTML = data.errores.join('<br>');
+                }
+            })
+            .catch(error => {
+                console.error('Error al eliminar el alumno:', error);
+            });
+        });
+    
+        document.getElementById('no').addEventListener('click', () => {
+            formularioEliminar.style.display = 'none'; 
+            listaAlumnosDiv.style.display = 'block'; 
+        });
+    
+        botonCerrarEliminar.addEventListener('click', () => {
             formularioEliminar.style.display = 'none';
             listaAlumnosDiv.style.display = 'block';
-            console.log(`Cerrado`);
-            }));
-        console.log(`Editar alumno con ID: ${id}`);
-
+        });
     }
-  
+    
+    
+    
 });
