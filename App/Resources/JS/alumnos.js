@@ -1,65 +1,53 @@
 document.addEventListener('DOMContentLoaded', function () {
+
     const listaAlumnos = document.getElementById('lista-alumnos');
-    const asistencia = document.getElementById('asistencia-alumno');
-    const condicion = document.getElementById('condicion-alumno');
     const listaAlumnosDiv = document.getElementById('Listalumnos');
-    const asistenciaDiv = document.getElementById('asistencia-Alumnos');
-    const condicionAlumnosDiv = document.getElementById('condicion-Alumnos');
-    const crearAlumno = document.getElementById('crear-alumno'); 
+    const crearAlumno = document.getElementById('crear-alumno');
     const formularioAlumnoDiv = document.getElementById('formularioAlumno'); 
     const cerrarAlumno = document.getElementById('cerrar-alumno');
+
     const formularioEditar=document.getElementById('formularioeditarAlumno');
     const botonCerrarEditar= document.getElementById('cerrar-alumno-editar');
     const botonEnviarEditar= document.getElementById('enviar-alumno-editar');
+
     const formularioEliminar= document.getElementById('formularioAlumnoEliminar');
     const botonCerrarEliminar= document.getElementById('cerrar-alumno-eliminar');
     const botonEnviarEliminar= document.getElementById('enviar-alumno-eliminar');
 
-   
-   
-    listaAlumnos.addEventListener('click', function () {
-    asistenciaDiv.style.display = 'none';
-    condicionAlumnosDiv.style.display = 'none';
-    listaAlumnosDiv.style.display = 'block';
-    formularioAlumnoDiv.style.display = 'none'; 
-    cargarAlumnos();
-    });
-
-    asistencia.addEventListener('click', function () {
-        listaAlumnosDiv.style.display = 'none';
-        condicionAlumnosDiv.style.display = 'none';
-        asistenciaDiv.style.display = 'block';
-        formularioAlumnoDiv.style.display = 'none'; 
-        formularioEditar.style.display = 'none';
-        formularioEliminar.style.display = 'none';
-        cargarAlumnosAsistencia();
-    });
-
+    const asistenciaAlumnos= document.getElementById('asistencia-Alumnos');
+    const condicionAlumnos= document.getElementById('condicion-Alumnos');
     
-    condicion.addEventListener('click', function () {
-        listaAlumnosDiv.style.display = 'none';
-        asistenciaDiv.style.display = 'none';
-        condicionAlumnosDiv.style.display = 'block';
-        formularioAlumnoDiv.style.display = 'none'; 
-        formularioEditar.style.display = 'none';
-        listaAlumnosDiv.style.display = 'none';
-        formularioEliminar.style.display = 'none';
+    
+
+    listaAlumnos.addEventListener('click', function () {
+    listaAlumnosDiv.style.display = 'block';
+    formularioAlumnoDiv.style.display = 'none';
+    asistenciaAlumnos.style.display = 'none'; 
+    condicionAlumnos.style.display = 'none';
+    cargarAlumnos();
     });
 
     
     crearAlumno.addEventListener('click', function () {
         listaAlumnosDiv.style.display = 'none';
-        asistenciaDiv.style.display = 'none'; 
-        condicionAlumnosDiv.style.display = 'none'; 
         formularioAlumnoDiv.style.display = 'block'; 
+        asistenciaAlumnos.style.display = 'none';
+        condicionAlumnos.style.display = 'none';
+        document.getElementById('resultado').innerHTML=' ';
+        document.getElementById('error').innerHTML=' ';
     });
 
     
     cerrarAlumno.addEventListener('click', function () {
+        listaAlumnosDiv.style.display = 'block';
         formularioAlumnoDiv.style.display = 'none'; 
-        listaAlumnosDiv.style.display = 'block'; 
-    });
-
+        asistenciaAlumnos.style.display = 'none';
+        condicionAlumnos.style.display = 'none';
+        limpiarFormulario(formulario); 
+        document.getElementById('resultado').innerHTML = ' ';
+        document.getElementById('error').innerHTML = ' ';
+       });
+    
 
 
     let formulario = document.getElementById('formDatosAlumno');
@@ -69,32 +57,35 @@ document.addEventListener('DOMContentLoaded', function () {
         const idMateria = urlParams.get('id'); 
         let datos = new FormData(formulario); 
         datos.append('id_materia', idMateria); 
+
         document.getElementById('resultado').innerHTML = ''; 
         document.getElementById('error').innerHTML = ''; 
-    fetch('registroAlumno.php', { 
-        method: 'POST', 
-        body: datos 
-    })
-    .then(res => res.json()) 
-    .then(data => {
-        // Manejo de la respuesta
-        if (data.estado === 'exito') {
-            document.getElementById('resultado').innerHTML = data.mensaje; 
-        } else if (data.estado === 'error') {
-            if (data.errores && Array.isArray(data.errores)) {
-                data.errores.forEach(error => {
-                    document.getElementById('error').innerHTML += error + '<br>'; 
-                });
-            } else {
-                document.getElementById('error').innerHTML = data.mensaje; 
+        
+        fetch('registroAlumno.php', { 
+            method: 'POST', 
+            body: datos 
+        })
+        .then(res => res.json()) 
+        .then(data => {
+            console.log(data);
+            // Manejo de la respuesta
+            if (data.estado === 'exito') {
+                document.getElementById('resultado').innerHTML = data.mensaje; 
+            } else if (data.estado === 'error') {
+                if (data.errores && Array.isArray(data.errores)) {
+                    data.errores.forEach(error => {
+                        document.getElementById('error').innerHTML += error + '<br>'; 
+                    });
+                } else {
+                    document.getElementById('error').innerHTML = data.mensaje; 
+                }
             }
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        document.getElementById('error').innerHTML = 'Error al usar fetch: ' + error; 
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('error').innerHTML = 'Error al usar fetch: ' + error; 
+        });
     });
-});
     
 
 function cargarAlumnos() {
@@ -152,7 +143,7 @@ function cargarAlumnos() {
 
                 listaAlumnos.innerHTML = tablaHTML;
 
-                   // Añadir funcionalidad a los botones de Editar y Eliminar
+
                 document.querySelectorAll('.editar-btn').forEach(btn => {
                     btn.addEventListener('click', (event) => {
                         const alumnoId = event.target.getAttribute('data-id');
@@ -178,128 +169,65 @@ function cargarAlumnos() {
     });
 }
     
-    
-    
-    function cargarAlumnosAsistencia() {
-        const url = new URLSearchParams(window.location.search);
-        const idMateria = url.get('id');
 
-        const datos = new FormData();
+
+
+function editarAlumno(alumnoId) {
+    formularioEditar.style.display = 'block';
+    listaAlumnosDiv.style.display = 'none';
+
+    limpiarFormulario(formularioEditar);
+
+    const url = new URLSearchParams(window.location.search);
+    const idMateria = url.get('id');
+
+    // Limpiar mensajes de error anteriores
+    document.getElementById('error-editar').innerHTML = '';
+    document.getElementById('resultado-editar').innerHTML = '';
+
+    // Eliminar el listener anterior si ya existe
+    botonCerrarEditar.removeEventListener('click', cerrarFormulario);
+
+    // Agregar el nuevo listener
+    botonCerrarEditar.addEventListener('click', cerrarFormulario);
+
+    function cerrarFormulario() {
+        formularioEditar.style.display = 'none';
+        listaAlumnosDiv.style.display = 'block';
+    }
+
+    // Código para el envío del formulario (sin cambios)
+    botonEnviarEditar.addEventListener('click', (event) => {
+        event.preventDefault();
+        const datos = new FormData(formDatosEditarAlumno);
+        datos.append('id_alumno', alumnoId);
         datos.append('id_materia', idMateria);
 
-        fetch('obtenerAlumnos.php', {
+        fetch('editarAlumno.php', {
             method: 'POST',
             body: datos
         })
         .then(res => res.json())
         .then(data => {
+            console.log(data);
+            document.getElementById('resultado-editar').innerHTML = '';
+            document.getElementById('error-editar').innerHTML = '';
             if (data.estado === 'exito') {
-                const tomarAsistencia = document.getElementById('tomar-Asistencia');
-                tomarAsistencia.innerHTML = '';
-
-                if (Array.isArray(data.alumnos) && data.alumnos.length > 0) {
-                    let tablaHTML = `
-                     <button class="todos" type="button" id="seleccionar-todos">Seleccionar Todos</button>
-                    <table class="tabla-asistencia">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Apellido</th>
-                            <th>DNI</th>
-                            <th>Asistencia</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    `;
-                    data.alumnos.forEach(alumno => {
-                        tablaHTML += `
-                            <tr>
-                                <td>${alumno.nombre}</td>
-                                <td>${alumno.apellido}</td>
-                                <td>${alumno.dni}</td>
-                                <td>
-                                    <input type="checkbox" class="asistencia-checkbox" data-id="${alumno.id_alumno}">
-                                </td>
-                            </tr>
-                        `;
-                    });
-                    tablaHTML += `
-                            </tbody>
-                        </table>
-                        <button id="guardarAsistencia">Guardar Asistencia</button>
-                       
-                    `;
-                    tomarAsistencia.innerHTML = tablaHTML;
-                    // Agregar evento al botón "Seleccionar Todos"
-                const seleccionarTodosBtn = document.getElementById('seleccionar-todos');
-                seleccionarTodosBtn.addEventListener('click', () => {
-                    const checkboxes = document.querySelectorAll('.asistencia-checkbox');
-                    const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
-                    
-                    checkboxes.forEach(checkbox => {
-                        checkbox.checked = !allChecked; // Marcar o desmarcar
-                    });
-                });
-                } else {
-                    tomarAsistencia.innerHTML = '<p>No hay alumnos disponibles.</p>';
-                }
-            } else {
-                alert(data.mensaje);
+                document.getElementById('resultado-editar').innerHTML = data.mensaje;
+            } else if (data.estado === 'error') {
+                if (data.errores) {
+                    document.getElementById('error-editar').innerHTML = data.errores.join('<br>');
+                } 
             }
         })
         .catch(error => {
-            console.error('Error al obtener alumnos:', error);
+            console.error('Error al editar el alumno:', error);
         });
-    }
+    });
+}
 
-    function editarAlumno(alumnoId) {
-        formularioEditar.style.display = 'block';
-        listaAlumnosDiv.style.display = 'none';
     
-        const url = new URLSearchParams(window.location.search);
-        const idMateria = url.get('id');
-    
-        // Limpiar mensajes de error anteriores
-        document.getElementById('error-editar').innerHTML = '';
-        document.getElementById('resultado-editar').innerHTML = '';
-    
-        // Agregar el listener para el envío del formulario
-        botonEnviarEditar.addEventListener('click', (event) => {
-            event.preventDefault(); 
-            const datos = new FormData(formDatosEditarAlumno);
-            datos.append('id_alumno', alumnoId);
-            datos.append('id_materia', idMateria);
-    
-            fetch('editarAlumno.php', {
-                method: 'POST',
-                body: datos
-            })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                document.getElementById('resultado-editar').innerHTML = '';
-                document.getElementById('error-editar').innerHTML = '';
-                if (data.estado === 'exito') {
-                    document.getElementById('resultado-editar').innerHTML = data.mensaje;
-                } else if (data.estado === 'error') {
-                    if (data.errores) {
-                        document.getElementById('error-editar').innerHTML = data.errores.join('<br>');
-                    } 
-                }
-        })
-            .catch(error => {
-                console.error('Error al editar el alumno:', error);
-            });
-        });
-    
-        botonCerrarEditar.addEventListener('click', function () {
-            formularioEditar.style.display = 'none';
-            listaAlumnosDiv.style.display = 'block';
-        });
-
-    }
-    
-    function eliminarAlumno(alumnoId) {
+function eliminarAlumno(alumnoId) {
         formularioEliminar.style.display = 'block';
         listaAlumnosDiv.style.display = 'none';
     
@@ -342,8 +270,15 @@ function cargarAlumnos() {
             formularioEliminar.style.display = 'none';
             listaAlumnosDiv.style.display = 'block';
         });
-    }
+}
     
-    
-    
+
+function limpiarFormulario(formulario) {
+    const inputs = formulario.querySelectorAll('input');
+    inputs.forEach(input => {
+        input.value = ''; 
+    });
+}
+
+
 });

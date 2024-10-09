@@ -9,22 +9,29 @@
 </head>
 <body>
 <div class="login-container">
+    <!-- Contenedor del encabezado -->
     <div class="header-container">
         <div class="atras"><a href="paginaprincipal.html">Atrás</a></div>
     </div>
+    
+    <!-- Contenedor de botones de acción -->
     <div class="button-container">
         <button class="ingresar" type="button" id="lista-alumnos">Alumnos</button>
         <button class="ingresar" type="button" id="asistencia-alumno">Tomar Asistencia</button>
         <button class="ingresar" type="button" id="condicion-alumno">Ver condición</button>
     </div>
-    <div class="contenido-container">
-        <div id="Listalumnos" style="display: none;">
 
+    <!-- Contenedor principal de contenido -->
+    <div class="contenido-container">
+        
+        <!-- Sección de lista de alumnos -->
+        <div id="Listalumnos" style="display: none;">
             <p>Sección lista de alumnos</p>
             <div class="instituciones" id="lista-Alumnos"></div>
             <button class="ingresar" type="button" id="crear-alumno">Crear Alumnos</button>
         </div>
 
+        <!-- Formulario para ingresar datos del alumno -->
         <div class="form-container" style="display: none;" id="formularioAlumno">
             <h3>Ingresar datos del alumno</h3>
             <form id="formDatosAlumno" method="post">
@@ -66,6 +73,8 @@
                 </div>
             </form>
         </div>
+
+        <!-- Formulario para editar datos del alumno -->
         <div class="form-container" style="display: none;" id="formularioeditarAlumno">
             <h3>Ingresar datos a editar del alumno</h3>
             <form id="formDatosEditarAlumno" method="post">
@@ -108,6 +117,7 @@
             </form>
         </div>
 
+        <!-- Formulario para eliminar un alumno -->
         <div class="form-container" style="display: none;" id="formularioAlumnoEliminar">
             <form id="formDatosEliminarAlumno" method="post">
                 <div class="info-form-container">
@@ -131,20 +141,65 @@
             </form>
         </div>
         
-    
-        
-
+        <!-- Sección de condiciones de los alumnos -->
         <div id="condicion-Alumnos" style="display: none;">
             <p>Condiciones de los alumnos</p>
         </div>
         
+        <!-- Sección para tomar asistencia de los alumnos -->
         <div id="asistencia-Alumnos" style="display: none;">
-            
             <div id="tomar-Asistencia"></div>
+            
+            <!-- Formulario para confirmar asistencia -->
+            <div class="form-container" style="display: none;" id="formularioTomarAsistencia">
+                <form id="formDatosAsistencia" method="post">
+                    <div class="info-form-container">
+                        <div class="fila">
+                            <div class="columna">
+                                <p>¿Estás seguro?</p>
+                                <button type="button" id="si-asistencia">Sí</button>
+                                <button type="button" id="no-asistencia">No</button>
+                            </div>
+                        </div>
+                        <div class="cerrar">
+                            <button type="button" id="cerrar-asistencia">CERRAR</button>
+                        </div>
+                        <div class="mensajes-exito">
+                            <div id="resultado-asistencia"></div>
+                        </div>
+                        <div class="mensajes-error">
+                            <div id="error-asistencia" class="error"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Formulario para eliminar asistencia -->
+            <div class="form-container" style="display: none;" id="formularioEliminarAsistencia">
+                <form id="formDatosEliminarAsistencia" method="post">
+                    <div class="info-form-container">
+                        <div class="eliminar-asistencia">
+                            <label for="fecha-eliminar">Seleccione la fecha:</label>
+                            <input type="date" id="fecha-eliminar" name="fecha-eliminar" >
+                            <button type="button" id="enviar-asistencia-eliminar">Enviar</button>
+                        </div>
+                        <div class="cerrar">
+                            <button type="button" id="cerrar-a-eliminar">CERRAR</button>
+                        </div>
+                        <div class="mensajes-exito">
+                            <div id="resultado-eliminarAsistencia"></div>
+                        </div>
+                        <div class="mensajes-error">
+                            <div id="error-eliminarAsistencia" class="error"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
 
 <script src="App/Resources/JS/alumnos.js"></script>
+<script src="App/Resources/JS/asistencia.js"></script>
 </body>
 </html>
