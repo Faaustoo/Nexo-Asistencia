@@ -6,34 +6,38 @@ $conn = $database->connect();
 $erroresExiste = [];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $alumno = new Alumno('', '', '', '', '', ''); // Crear instancia de Alumno
-    $data = $alumno->obtenerDatos(); 
-    $erroresValidar = $alumno->validarDatos($data); 
+    // Crear instancia de Profesor
+    $profesor = new Profesor('', '', '', '', '', ''); 
+    $data = $profesor->obtenerDatos(); 
+
+    // Validar datos
+    $erroresValidar = $profesor->validarDatos($data); 
 
     if (empty($erroresValidar)) {
-        $id_alumno = $data['id_alumno']; // Obtener el ID del alumno para editar
-        $nombre = $data['nombre'];
+        $nombre = $data['nombre']; 
         $apellido = $data['apellido'];
         $dni = $data['dni'];
         $email = $data['email'];
-        $fecha_nacimiento = $data['fecha_nacimiento'];
-        $id_materia = $data['id_materia'];
+        $contrasena = $data['contrasena'];
+        $numero_legajo = $data['numero_legajo'];
 
-        $erroresExiste = $alumno->existe($data, $conn);
+        // Verificar si el registro ya existe
+        $erroresExiste = $profesor->existe($data, $conn);
 
         if (empty($erroresExiste)) {
+            // Establecer los datos en el objeto Profesor
+            $profesor->setNombre($nombre);
+            $profesor->setApellido($apellido);
+            $profesor->setDni($dni);
+            $profesor->setEmail($email);
+            $profesor->setNumeroLegajo($numero_legajo);
+            $profesor->setContrasena($contrasena);
 
-            $alumno->setNombre($nombre);
-            $alumno->setApellido($apellido);
-            $alumno->setDni($dni);
-            $alumno->setEmail($email);
-            $alumno->setFechaNacimiento($fecha_nacimiento);
-            $alumno->setIdMateria($id_materia);
-
-            if ($alumno->editarAlumno($id_alumno,$conn)) {
-                echo json_encode(['estado' => 'exito', 'mensaje' => 'Alumno editado exitosamente.']);
+            // Crear el registro en la base de datos
+            if ($profesor->create($conn)) {
+                echo json_encode(['estado' => 'exito', 'mensaje' => 'Creado exitosamente.']);
             } else {
-                echo json_encode(['estado' => 'error', 'mensaje' => 'Error al editar el Alumno.']);
+                echo json_encode(['estado' => 'error', 'mensaje' => 'Error al crear.']);
             }
         } else {
             echo json_encode(['estado' => 'error', 'errores' => $erroresExiste]);
