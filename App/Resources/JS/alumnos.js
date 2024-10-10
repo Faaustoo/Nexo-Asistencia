@@ -21,7 +21,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     listaAlumnos.addEventListener('click', function () {
     listaAlumnosDiv.style.display = 'block';
+    listaAlumnos.style.display='block';
     formularioAlumnoDiv.style.display = 'none';
+    formularioEditar.style.display="none";
+    formularioEliminar.style.display="none"
     asistenciaAlumnos.style.display = 'none'; 
     condicionAlumnos.style.display = 'none';
     cargarAlumnos();

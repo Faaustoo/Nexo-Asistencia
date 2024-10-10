@@ -6,11 +6,9 @@ $conn = $database->connect();
 $erroresExiste = [];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Crear instancia de Profesor
     $profesor = new Profesor('', '', '', '', '', ''); 
     $data = $profesor->obtenerDatos(); 
 
-    // Validar datos
     $erroresValidar = $profesor->validarDatos($data); 
 
     if (empty($erroresValidar)) {
@@ -21,11 +19,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $contrasena = $data['contrasena'];
         $numero_legajo = $data['numero_legajo'];
 
-        // Verificar si el registro ya existe
         $erroresExiste = $profesor->existe($data, $conn);
 
         if (empty($erroresExiste)) {
-            // Establecer los datos en el objeto Profesor
             $profesor->setNombre($nombre);
             $profesor->setApellido($apellido);
             $profesor->setDni($dni);
@@ -33,7 +29,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $profesor->setNumeroLegajo($numero_legajo);
             $profesor->setContrasena($contrasena);
 
-            // Crear el registro en la base de datos
             if ($profesor->create($conn)) {
                 echo json_encode(['estado' => 'exito', 'mensaje' => 'Creado exitosamente.']);
             } else {
