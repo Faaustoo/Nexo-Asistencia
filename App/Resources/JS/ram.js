@@ -49,17 +49,14 @@ function cargarDatosRam(institucionId) {
 
             const botonEditar = document.getElementById('editar-ram');
             botonEditar.addEventListener('click', () => {
-                // Llenar los campos del formulario con los datos actuales
                 document.getElementById('porcentaje_promocion').value =ram.porcentaje_promocion;
                 document.getElementById('porcentaje_regular').value = ram.porcentaje_regular;
                 document.getElementById('nota_promocion').value = ram.nota_promocion;
                 document.getElementById('nota_regular').value =ram.nota_regular;
 
-                // Mostrar el formulario y ocultar la tabla
                 document.getElementById('formularioEditarRam').style.display = "block";
                 divRam.style.display = "none";
 
-                // Guardar cambios
                 document.getElementById('formDatosRam').onsubmit = (e) => {
                     e.preventDefault();
                     guardarCambios(institucionId);
@@ -77,9 +74,7 @@ function guardarCambios(institucionId) {
     const datos = new FormData(form);
     datos.append('id_institucion', institucionId);
 
-    for (let pair of datos.entries()) {
-        console.log(pair[0] + ': ' + pair[1]);
-    }
+
     fetch('editarRam.php', {
         method: 'POST',
         body: datos

@@ -51,39 +51,39 @@ trait ValidarNotas {
     public static function validarDatosNotas($data) {
         $errores = [];
         $numeros = "/^[0-9]+(\.[0-9]+)?$/";
-
-        if (empty($data['parcial_uno'])) {
+    
+        if (!isset($data['parcial_uno']) || $data['parcial_uno'] === '') {
             $errores[] = "La nota del primer parcial es obligatoria.";
         } elseif (!preg_match($numeros, $data['parcial_uno']) || $data['parcial_uno'] < 0 || $data['parcial_uno'] > 10) {
             $errores[] = "La nota del primer parcial debe ser un número entre 0 y 10.";
         }
-
-        if (empty($data['parcial_dos'])) {
+    
+        if (!isset($data['parcial_dos']) || $data['parcial_dos'] === '') {
             $errores[] = "La nota del segundo parcial es obligatoria.";
         } elseif (!preg_match($numeros, $data['parcial_dos']) || $data['parcial_dos'] < 0 || $data['parcial_dos'] > 10) {
             $errores[] = "La nota del segundo parcial debe ser un número entre 0 y 10.";
         }
-
-        if (empty($data['trabajo_final'])) {
+    
+        if (!isset($data['trabajo_final']) || $data['trabajo_final'] === '') {
             $errores[] = "La nota del trabajo final es obligatoria.";
-        } elseif (!preg_match($numeros, $data['trabajo_final']) || $data['trabajo_final'] <= 0 || $data['trabajo_final'] >= 10) {
+        } elseif (!preg_match($numeros, $data['trabajo_final']) || $data['trabajo_final'] < 0 || $data['trabajo_final'] > 10) {
             $errores[] = "La nota del trabajo final debe ser un número entre 0 y 10.";
         }
-
+    
         if (empty($data['id_alumno'])) {
             $errores[] = "Error ID.";
         } elseif (!preg_match($numeros, $data['id_alumno'])) {
             $errores[] = "Id no encontrado.";
         }
-
+    
         if (empty($data['id_materia'])) {
             $errores[] = "error ID.";
         } elseif (!preg_match($numeros, $data['id_materia'])) {
             $errores[] = "Id no encontrado.";
         }
-
-
+    
         return $errores;
     }
+    
 }
 ?>

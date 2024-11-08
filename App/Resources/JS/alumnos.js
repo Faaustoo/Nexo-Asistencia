@@ -62,6 +62,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         document.getElementById('resultado').innerHTML = ''; 
         document.getElementById('error').innerHTML = ''; 
+        const inputs = formulario.querySelectorAll('input');
+        inputs.forEach(input => {
+        input.value = ''; 
+    });
         
         fetch('registroAlumno.php', { 
             method: 'POST', 
@@ -279,6 +283,7 @@ function eliminarAlumno(alumnoId) {
                     setTimeout(() => {formularioEliminar.style.display = 'none'; 
                         listaAlumnosDiv.style.display = 'block'; 
                     }, 1000);
+                    
                     cargarAlumnos() ;
                 } else if (data.estado === 'error' && data.errores) {
                     document.getElementById('error-eliminar').innerHTML = data.errores.join('<br>');

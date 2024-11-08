@@ -118,6 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         // si apreto si, guardo la asistencia en la bd
                         document.getElementById('si-asistencia').onclick = () => {
                             guardarAsistencia();
+                            
                         };
 
                         // si apreto no, cierro el formulario
@@ -193,8 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (data.estado === 'exito') {
             document.getElementById('resultado-eliminarAsistencia').innerHTML = data.mensaje;
-            setTimeout(() => {formularioEliminarAsistencia.style.display = 'none'; 
-            }, 1000);
+           
         } else if (data.estado === 'error') {
             document.getElementById('error-eliminarAsistencia').innerHTML = data.mensaje; 
             if (data.errores.length > 0) {

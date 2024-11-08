@@ -101,6 +101,21 @@ class Asistencia {
         return $rowCount > 0; 
     }
     
+    public static function existeAsistenciaProfesor($conn, $fecha, $id_materia) {
+        
+        $query = "SELECT COUNT(*) FROM asistencias WHERE fecha = :fecha AND id_materia = :id_materia";
+
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':fecha', $fecha);
+        $stmt->bindParam(':id_materia', $id_materia); 
+        $stmt->execute();
+        
+        $count = $stmt->fetchColumn(); 
+
+        return $count > 0;
+    }
+    
+    
     
     
     
