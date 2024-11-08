@@ -40,3 +40,6 @@ Cargar Datos y Ejecutar el Programa:
   Esto te proporcionará un enlace local, como http://localhost:80.
   copia el enlace en el navegador y estará listo para usar.
 
+El programa ya tiene un Usuario y contraseña cargados para poder evaluarse:  
+ - Email : javier@gmail.com
+ - contraseña: javier123
