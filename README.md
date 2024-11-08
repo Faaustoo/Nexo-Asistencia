@@ -34,13 +34,13 @@ Haz clic en el botón 'Code' y selecciona 'Download ZIP'. Luego, extrae el archi
 cargar la Base de Datos en MySQL 
 
 
-  -Importar la base de datos: Si el proyecto incluye un archivo de base de datos (como un archivo .sql), necesitarás cargarlo en MySQL.
-    Abre la Terminal de Laragon y accede al cliente de MySQL:
-    Copiar siguiente comando en la terminal y darle vos veces ENTER: 
+ Importar la base de datos: Si el proyecto incluye un archivo de base de datos (como un archivo .sql), necesitarás cargarlo en MySQL. Para hacerlo, abre la Terminal de Laragon y accede al cliente de MySQL. Luego, copia el siguiente comando en la terminal y presiona ENTER dos veces
     
     mysql -u root -p; 
   -Crea la base de datos para el proyecto:
-    Localiza el archivo Asistencia.sql, ábrelo, copia su contenido y pégalo en la terminal (dar enter y los datos se cargaran automaticamente)
+
+  
+  Localiza el archivo Asistencia.sql, ábrelo, copia su contenido y pégalo en la terminal (dar enter y los datos se cargaran automaticamente)
   
 Cargar Datos y Ejecutar el Programa:
   En Laragon, accede a la Terminal:
