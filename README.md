@@ -43,17 +43,20 @@ cargar la Base de Datos en MySQL
   Localiza el archivo Asistencia.sql, ábrelo, copia su contenido y pégalo en la terminal (dar enter y los datos se cargaran automaticamente)
   
 Cargar Datos y Ejecutar el Programa:
-  En Laragon, accede a la Terminal:
-  Usa los siguientes comandos:
-  Navega a la carpeta del proyecto usando el comando : 
+
+
+ En Laragon, accede a la Terminal y usa los siguientes comandos: primero, navega a la carpeta del proyecto usando el comando:
     
     cd Asistencia;
   Inicia el servidor PHP usando el comando:  
      
      php -S localhost:80;
-  Esto te proporcionará un enlace local, como http://localhost:80.
-  copia el enlace en el navegador y estará listo para usar.
+  Esto te proporcionará un enlace local, como http://localhost:80. Copia el enlace en el navegador y estará listo para usar.
+
 
 El programa ya tiene un Usuario y contraseña cargados para poder evaluarse:  
- - Email : javier@gmail.com
- - contraseña: javier123
+ - Email :
+
+       javier@gmail.com
+ - contraseña:
+ -       javier123
