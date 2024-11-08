@@ -20,7 +20,7 @@ Pasos para Descargar, Configurar y Ejecutar el Proyecto con Laragon:
 Descargar el Proyecto:
   -Descarga el archivo ZIP del proyecto desde el repositorio de GitHub:
     -Haz clic en el botón Code y selecciona Download ZIP.
-    -Extrae el archivo ZIP en una carpeta.
+    -Extrae el archivo ZIP en una carpeta, y podrás cambiarle el nombre a la carpeta según prefieras.
     -Mueve la carpeta del proyecto extraído a la carpeta www en Laragon. Usualmente, la ruta es algo como C:\laragon\www.
     -Si la carpeta del proyecto se llama Asistencia, deberías tener la ruta C:\laragon\www\Asistencia.
     
