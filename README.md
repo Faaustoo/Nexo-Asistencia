@@ -24,10 +24,7 @@ Descargar el Proyecto:
   -Descarga el archivo ZIP del proyecto desde el repositorio de GitHub:
 
   
-  -Haz clic en el botón Code y selecciona Download ZIP.
-        -Extrae el archivo ZIP en una carpeta, y podrás cambiarle el nombre a la carpeta según prefieras.
-        -Mueve la carpeta del proyecto extraído a la carpeta www en Laragon. Usualmente, la ruta es algo como C:\laragon\www.
-        -Si la carpeta del proyecto se llama Asistencia, deberías tener la ruta C:\laragon\www\Asistencia.
+Haz clic en el botón 'Code' y selecciona 'Download ZIP'. Luego, extrae el archivo ZIP en una carpeta, a la que podrás cambiarle el nombre según prefieras. Después, mueve la carpeta del proyecto extraído a la carpeta 'www' en Laragon, cuya ruta usualmente es C:\laragon\www. Si la carpeta del proyecto se llama 'Asistencia', la ruta final será C:\laragon\www\Asistencia
     
 cargar la Base de Datos en MySQL  
   -Importar la base de datos: Si el proyecto incluye un archivo de base de datos (como un archivo .sql), necesitarás cargarlo en MySQL.
