@@ -29,7 +29,6 @@ CREATE TABLE IF NOT EXISTS `alumnos` (
   `fecha_nacimiento` date NOT NULL,
   `id_materia` int DEFAULT NULL,
   PRIMARY KEY (`id_alumno`),
-  UNIQUE KEY `dni` (`dni`),
   KEY `fk_id_materia` (`id_materia`),
   CONSTRAINT `fk_id_materia` FOREIGN KEY (`id_materia`) REFERENCES `materias` (`id_materia`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

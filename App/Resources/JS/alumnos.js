@@ -136,13 +136,18 @@ function cargarAlumnos() {
                 `;
 
                 data.alumnos.forEach(alumno => {
+                    const partes = alumno.fecha_nacimiento.split('-');  
+                    const dia = partes[2];  
+                    const mes = partes[1];  
+                    const anio = partes[0];
+                    const fechaFormateada = dia + '/' + mes + '/' + anio; 
                     tablaHTML += `
                         <tr>
                             <td>${alumno.apellido}</td>
                             <td>${alumno.nombre}</td>
                             <td>${alumno.dni}</td>
                             <td>${alumno.email}</td>
-                            <td>${alumno.fecha_nacimiento}</td>
+                            <td>${fechaFormateada}</td>
                             <td>
                                 <button class="editar-btn" data-id="${alumno.id_alumno}">Editar</button>
                                 <button class="eliminar-btn" data-id="${alumno.id_alumno}">Eliminar</button>
