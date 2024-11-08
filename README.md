@@ -10,8 +10,7 @@ Nexo es un sistema sencillo para gestionar las asistencias, materias, alumnos y 
   Notas y Promoción: Ingresa las notas fácilmente y consulta si un alumno promociona, regulariza o queda libre según su rendimiento.
   Nexo está diseñado para simplificar todas estas tareas y darte un control completo sobre tus clases y alumnos.
 
-Pasos para Descargar, Configurar y Ejecutar el Proyecto con Laragon:
-    Descargar e Instalar Laragon: Ve a Laragon y descarga la última versión 
+Pasos para Descargar, Configurar y Ejecutar el Proyecto con Laragon: Ve a Laragon y descarga la última versión 
     
     https://laragon.org/download/
   Ejecuta el instalador y sigue las instrucciones para completar la instalación.
