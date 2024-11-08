@@ -26,7 +26,7 @@ Descargar el Proyecto:
   
 Haz clic en el botón 'Code' y selecciona 'Download ZIP'. Luego, extrae el archivo ZIP en una carpeta, a la que podrás cambiarle el nombre según prefieras. Después, mueve la carpeta del proyecto extraído a la carpeta 'www' en Laragon, cuya ruta usualmente es:
     
-    C:\laragon\www. 
+    C:\laragon\www
   Si la carpeta del proyecto se llama 'Asistencia', la ruta final será :
   
     C:\laragon\www\Asistencia
@@ -36,9 +36,9 @@ cargar la Base de Datos en MySQL
 
   -Importar la base de datos: Si el proyecto incluye un archivo de base de datos (como un archivo .sql), necesitarás cargarlo en MySQL.
     Abre la Terminal de Laragon y accede al cliente de MySQL:
-    Copiar siguiente comando en la terminal: 
+    Copiar siguiente comando en la terminal y darle vos veces ENTER: 
     
-    mysql -u root -p; (dar enter dos veces).
+    mysql -u root -p; 
   -Crea la base de datos para el proyecto:
     Localiza el archivo Asistencia.sql, ábrelo, copia su contenido y pégalo en la terminal (dar enter y los datos se cargaran automaticamente)
   
