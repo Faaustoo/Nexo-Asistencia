@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id_materia = $_POST['id_materia'];
 
     if (Asistencia::existeAsistenciaProfesor($conn, $fecha, $id_materia)) {
-        echo json_encode(['estado' => 'error', 'mensaje' => 'Ya se ha tomado asistencia la fecha seleccionada.']);
+        echo json_encode(['estado' => 'error', 'mensaje' => 'Ya se tomo asistencia en la fecha seleccionada.']);
         exit; 
     }
     foreach ($data as $datos) { 
