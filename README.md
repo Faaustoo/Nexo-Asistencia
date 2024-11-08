@@ -40,7 +40,7 @@ cargar la Base de Datos en MySQL
   -Crea la base de datos para el proyecto:
 
   
-  Localiza el archivo Asistencia.sql, ábrelo, copia su contenido y pégalo en la terminal (dar enter y los datos se cargaran automaticamente)
+  Localiza el archivo Asistencia.sql (descargado en el archivo ZIP), ábrelo, copia su contenido y pégalo en la terminal (dar enter y los datos se cargaran automaticamente)
   
 Cargar Datos y Ejecutar el Programa:
 
