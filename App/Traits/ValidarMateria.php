@@ -3,24 +3,24 @@ namespace App\Traits;
 
 trait ValidarMateria {
     
-    public function clean_input($data) {
+    public static function clean_input($data) {
         $data = trim($data);
         $data = stripslashes($data);
         $data = htmlspecialchars($data);
         return $data;
     }
 
-    public function obtenerDatos() {
+    public static function obtenerDatos() {
         $datos = [];
         
         if (isset($_POST['nombre_materia'])) {
-            $datos['nombre_materia'] = $this->clean_input($_POST['nombre_materia']);
+            $datos['nombre_materia'] = self::clean_input($_POST['nombre_materia']);
         } else {
             $datos['nombre_materia'] = '';
         }
 
         if (isset($_POST['id_institucion'])) {
-            $datos['id_institucion'] = $this->clean_input($_POST['id_institucion']);
+            $datos['id_institucion'] = self::clean_input($_POST['id_institucion']);
         } else {
             $datos['id_institucion'] = '';
         }
@@ -28,7 +28,7 @@ trait ValidarMateria {
         return $datos;
     }
 
-    public function validarDatos($data) {
+    public static function validarDatos($data) {
         $errores = [];
         $letrasEspaciosNumeros = "/^[a-zA-Z0-9\s]+$/";
         $numeros = "/^[0-9]+$/";
@@ -40,33 +40,46 @@ trait ValidarMateria {
         }
 
         if (empty($data['id_institucion'])) {
-            $errores[] = "El ID de la institución no se encuentra.";
+            $errores[] = "Error Id.";
         } elseif (!preg_match($numeros, $data['id_institucion'])) {
-            $errores[] = "El ID de la institución solo puede ser numérico.";
+            $errores[] = "El ID de la institución no se encuentra.";
         }
 
         return $errores;
     }
 
-    public function obtenerDatosEliminar() {
+    public static function obtenerDatosEliminar() {
         $datos = [];
         if (isset($_POST['nombre_materia'])) {
-            $datos['nombre_materia'] = $this->clean_input($_POST['nombre_materia']);
+            $datos['nombre_materia'] = self::clean_input($_POST['nombre_materia']);
         } else {
             $datos['nombre_materia'] = '';
+            
+        }
+        if (isset($_POST['id_institucion'])) {
+            $datos['id_institucion'] = self::clean_input($_POST['id_institucion']);
+        } else {
+            $datos['id_institucion'] = '';
         }
         
         return $datos; 
     }
     
-    public function validarDatosEliminar($data) {
+    public static function validarDatosEliminar($data) {
         $letrasEspaciosNumeros = "/^[a-zA-Z0-9\s]+$/";
+        $numeros = "/^[0-9]+$/";
         $errores = []; 
         
         if (empty($data['nombre_materia'])) {
             $errores[] = "El nombre es obligatorio.";
         } elseif (!preg_match($letrasEspaciosNumeros, $data['nombre_materia'])) {
             $errores[] = "El nombre solo puede contener letras, espacios y números.";
+        }
+
+        if (empty($data['id_institucion'])) {
+            $errores[] = "Error Id";
+        } elseif (!preg_match($numeros, $data['id_institucion'])) {
+            $errores[] = "El ID no se encuentra.";
         }
     
         return $errores; 

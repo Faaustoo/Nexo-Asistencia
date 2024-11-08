@@ -4,136 +4,231 @@ document.addEventListener("DOMContentLoaded", () => {
     const divCondicion = document.getElementById('condicion-Alumnos');
     const divAsistencia = document.getElementById('asistencia-Alumnos');
     const formularioAlumnoDiv = document.getElementById('formularioAlumno'); 
-    const formularioEditar = document.getElementById('formularioeditarAlumno');
+    const formularioEditarAlumno = document.getElementById('formularioeditarAlumno');
     const formularioEliminar = document.getElementById('formularioAlumnoEliminar');
     const Listalumnosdiv = document.getElementById('Listalumnos');
-
-    // Mostrar la sección de tomar asistencia
+    
     btncondicion.addEventListener("click", () => {
-        console.log('click');
         divCondicion.style.display = "block";
         divListaCondicion.style.display = "block";
-        divAsistencia.style.display = "none"; 
-        Listalumnosdiv.style.display = "none"; 
+        divAsistencia.style.display = "none";
+        Listalumnosdiv.style.display = "none";
         formularioAlumnoDiv.style.display = 'none';
-        formularioEditar.style.display = "none";
+        formularioEditarAlumno.style.display = "none";
         formularioEliminar.style.display = "none";
-        cargarAlumnos();
+        document.getElementById('formulariEditarNota').style.display = 'none';
+       
     });
+
 
     function cargarAlumnos() {
         const url = new URLSearchParams(window.location.search);
         const idMateria = url.get('id');
-        console.log('ID de materia:', idMateria); // Verifica que se esté capturando el ID correctamente
     
         const datos = new FormData();
         datos.append('id_materia', idMateria);
-        
-        // Mostrar indicador de carga
-        document.getElementById('condicion-lista').innerHTML = '<p>Cargando alumnos...</p>';
     
-        fetch('obtenerAlumnosNotas.php', { 
+        fetch('obtenerAlumnosNotas.php', {
             method: 'POST',
             body: datos
         })
         .then(res => res.json())
         .then(data => {
             console.log(data);
-    
             const listaAlumnos = document.getElementById('condicion-lista');
-            listaAlumnos.innerHTML = ''; 
+            listaAlumnos.innerHTML = '';
     
             if (data.estado === 'exito') {
-                    let tablaHTML = `
-                        <div id="error-condicion"></div>
-                        <div id="resultado-condicion"></div>
-                        <table class="tabla-alumnos">
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Apellido</th>
-                                    <th>DNI</th>
-                                    <th>Parcial 1</th>
-                                    <th>Parcial 2</th>
-                                    <th>Trabajo Final</th>
-                                    <th>Asistencia %</th>
-                                    <th>Estado</th>
-                                    <th>Acción</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                    `;
-    
-                    // guard las asistencias por alumno
-                        const asistenciasPorAlumno = {};
-                        data.asistencias.forEach(asistencia => {
-                            const idAlumno = asistencia.id_alumno;
-                            const estadoAsistencia = asistencia.estado_asistencia; 
-
-                            if (!asistenciasPorAlumno[idAlumno]) {
-                                asistenciasPorAlumno[idAlumno] = {presentes: 0, ausentes: 0 };
-                            }
-
-                            if (estadoAsistencia === 1) {
-                                asistenciasPorAlumno[idAlumno].presentes++;
-                            } else {
-                                asistenciasPorAlumno[idAlumno].ausentes++;
-                            }
-                        });
-                        console.log(asistenciasPorAlumno);
-
-    
-                    data.notas.forEach(alumno => {
-                        const asistencias = asistenciasPorAlumno[alumno.id_alumno] ;
-                        const totalAsistencias = asistencias.presentes + asistencias.ausentes;
-                        let porcentajeAsistencia;
-
-                            if (totalAsistencias > 0) {
-                                porcentajeAsistencia = (asistencias.presentes / totalAsistencias) * 100;
-                            } else {
-                                porcentajeAsistencia = 0; 
-                            }
-
-    
-                        tablaHTML += `
+                let tablaHTML = `
+                <div class="tabla-container">
+                    <table class="tabla-alumnos">
+                        <thead>
                             <tr>
-                                <td>${alumno.nombre || 'N/A'}</td>
-                                <td>${alumno.apellido || 'N/A'}</td>
-                                <td>${alumno.dni || 'N/A'}</td>
-                                <td>${alumno.parcial1 !== null ? alumno.parcial1 : 'N/A'}</td>
-                                <td>${alumno.parcial2 !== null ? alumno.parcial2 : 'N/A'}</td>
-                                <td>${alumno.trabajo_final !== null ? alumno.trabajo_final : 'N/A'}</td>
-                                <td>${porcentajeAsistencia}%</td>
-                                <td>${alumno.condicion || 'N/A'}</td>
-                                <td>
-                                    <button class="editar-btn" data-id="${alumno.id_alumno}">Editar Nota</button>
-                                </td>
+                                <th>Apellido</th>
+                                <th>Nombre</th>
+                                <th>DNI</th>
+                                <th>Parcial 1</th>
+                                <th>Parcial 2</th>
+                                <th>Trabajo Final</th>
+                                <th>Asistencia %</th>
+                                <th>Estado</th>
+                                <th>Acción</th>
                             </tr>
-                        `;
-                    });
+                        </thead>
+                        <tbody>
+                    </div>
+                `;
+    
+                const asistenciasPorAlumno = {};
+                data.asistencias.forEach(asistencia => {
+                    const idAlumno = asistencia.id_alumno;
+                    const estadoAsistencia = asistencia.estado_asistencia;
+    
+                    if (!asistenciasPorAlumno[idAlumno]) {
+                        asistenciasPorAlumno[idAlumno] = { presentes: 0, ausentes: 0 };
+                    }
+    
+                    if (estadoAsistencia === 1) {
+                        asistenciasPorAlumno[idAlumno].presentes++;
+                    } else {
+                        asistenciasPorAlumno[idAlumno].ausentes++;
+                    }
+                });
+    
+                // Object.keys() devuelve un array con las claves de un objeto.
+                // obtengo el id del primer id del alumno
+                const primerAlumnoId = Object.keys(asistenciasPorAlumno)[0];
+                const diasClases = asistenciasPorAlumno[primerAlumnoId].presentes + asistenciasPorAlumno[primerAlumnoId].ausentes;
+                document.getElementById('dia-clases').innerHTML = 'Cantidad de Clases: ' + diasClases;
+                let totalAsistencias = 0;
+                    if (primerAlumnoId) {
+                        totalAsistencias = asistenciasPorAlumno[primerAlumnoId].presentes + asistenciasPorAlumno[primerAlumnoId].ausentes;
+                    } else {
+                        totalAsistencias = 0;
+                    }
+
+                document.getElementById('dia-clases').innerHTML = 'Cantidad de Clases: ' + diasClases;
+    
+                data.notas.forEach(alumno => {
+                    const asistencias = asistenciasPorAlumno[alumno.id_alumno] || { presentes: 0, ausentes: 0 };
+                    const totalAsistencias = asistencias.presentes + asistencias.ausentes;
+                    let porcentajeAsistencia = 0;
+    
+                    if (totalAsistencias > 0) {
+                        porcentajeAsistencia = (asistencias.presentes / totalAsistencias) * 100;
+                    }
+                    
+                    let condicion = '';
+                    if (data.ram) {
+                        //parseFloat para convertir un string en un numero decimal
+
+                        const porcentajePromocionRam = parseFloat(data.ram.porcentaje_promocion);
+                        const porcentajeRegularRam = parseFloat(data.ram.porcentaje_regular);
+                        const notaPromocionRam = parseFloat(data.ram.nota_promocion);
+                        const notaRegularRam = parseFloat(data.ram.nota_regular);
+    
+                        const promedioNotas = (parseFloat(alumno.parcial1) + parseFloat(alumno.parcial2) + parseFloat(alumno.trabajo_final)) / 3;
+    
+                        if (porcentajeAsistencia >= porcentajePromocionRam && promedioNotas >= notaPromocionRam) {
+                            condicion = 'PROMOCION';
+                        } else if (porcentajeAsistencia >= porcentajeRegularRam && promedioNotas >= notaRegularRam) {
+                            condicion = 'REGULAR';
+                        } else {
+                            condicion = 'LIBRE';
+                        }
+                    }
     
                     tablaHTML += `
-                            </tbody>
-                        </table>
+                        <tr>
+                            <td>${alumno.apellido}</td>
+                            <td>${alumno.nombre}</td>
+                            <td>${alumno.dni}</td>
+                            <td>${alumno.parcial1}</td>
+                            <td>${alumno.parcial2}</td>
+                            <td>${alumno.trabajo_final}</td>
+                            <td>${porcentajeAsistencia.toFixed(2)}%</td>
+                            <td>${condicion}</td>
+                            <td>
+                                <button class="editar-btn-nota" data-id="${alumno.id_alumno}">Editar Nota</button>
+                            </td>
+                        </tr>
                     `;
+                });
     
-                    listaAlumnos.innerHTML = tablaHTML;
+                tablaHTML += `
+                        </tbody>
+                    </table>
+                `;
     
-                    // Agregar evento para los botones de editar
-                    document.querySelectorAll('.editar-btn').forEach(button => {
-                        button.addEventListener('click', function() {
-                            const idAlumno = this.getAttribute('data-id');
-                            // Lógica para editar la nota
-                            console.log('Editar nota para alumno ID:', idAlumno);
-                        });
+                listaAlumnos.innerHTML = tablaHTML;
+    
+                document.querySelectorAll('.editar-btn-nota').forEach(btn => {
+                    btn.addEventListener('click', (event) => {
+                        const alumnoId = event.target.getAttribute('data-id');
+                        editarNota(alumnoId, data.notas);
                     });
-                
+                });
             } else {
-                document.getElementById('error-condicion').innerHTML = data.mensaje; 
+                document.getElementById('error-condicion').innerHTML = data.mensaje;
             }
         })
         .catch(error => {
             document.getElementById('error-condicion').innerHTML = 'Error al usar fetch: ' + error;
         });
     }
+    
+
+    function editarNota(alumnoId , notas) {
+        const formulario = document.getElementById('formEditarNota'); 
+    
+        document.getElementById('formulariEditarNota').style.display = 'block';
+        document.getElementById('condicion-lista').style.display = 'none';
+        document.getElementById('dia-clases').style.display = 'none';
+        formularioEditarAlumno.style.display = 'none';
+    
+        const inputs = formulario.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.value = ''; 
+        });
+        document.getElementById('error-editar').innerHTML = '';
+        document.getElementById('resultado-editar').innerHTML = '';
+
+        const nota = notas.find(nota => nota.id_alumno == alumnoId);
+
+    if (nota) {
+        document.getElementById('parcial_uno').value = nota.parcial1;
+        document.getElementById('parcial_dos').value = nota.parcial2;
+        document.getElementById('trabajo_final').value = nota.trabajo_final;
+   
+    } else {
+        console.error('Alumno no encontrado en la lista');
+    }
+    
+        const url = new URLSearchParams(window.location.search);
+        const idMateria = url.get('id');
+    
+        // Cerrar el formulario
+        document.getElementById('cerrar-nota').addEventListener('click', () => {
+            cargarAlumnos();
+            document.getElementById('formulariEditarNota').style.display = "none";
+            document.getElementById('condicion-lista').style.display = "block";
+            document.getElementById('resultado-editar-nota').innerHTML = '';
+            document.getElementById('error-editar-nota').innerHTML = '';
+        });
+    
+        // Enviar el formulario
+        document.getElementById('enviar-nota').addEventListener('click', (event) => {
+            event.preventDefault();
+            
+    
+            let datos = new FormData(formulario);
+            datos.append('id_alumno', alumnoId);
+            datos.append('id_materia', idMateria);
+    
+            fetch('editarNota.php', {
+                method: 'POST',
+                body: datos
+            })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('resultado-editar-nota').innerHTML = '';
+                document.getElementById('error-editar-nota').innerHTML = '';
+                if (data.estado === 'exito') {
+                    document.getElementById('resultado-editar-nota').innerHTML = data.mensaje;
+                    setTimeout(() => {location.reload();}, 1000);
+                } else if (data.estado === 'error') {
+                    document.getElementById('error-editar-nota').innerHTML = data.errores.join('<br>');
+                }
+            })
+            .catch(error => {
+                console.error('Error al editar el alumno:', error);
+                document.getElementById('error-editar-nota').innerHTML = 'Hubo un error al procesar la solicitud';
+            });
+        });
+    }
+    
+    
+    cargarAlumnos();   
+    divCondicion.style.display = "block";
+        divListaCondicion.style.display = "block";
 });

@@ -1,8 +1,0 @@
-# Activar el motor de reescritura
-RewriteEngine On
-
-# Deshabilitar la indexación automática de directorios
-Options All-Indexes
-
-# Regla de reescritura
-RewriteRule ^([a-zA-Z0-9/ñÑ]+)$ index.php?views=$1 

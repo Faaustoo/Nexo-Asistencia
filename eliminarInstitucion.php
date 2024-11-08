@@ -6,22 +6,22 @@ $database = new Database();
 $conn = $database->connect();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $institucion = new Institucion('', '', '', ''); 
-    $datos = $institucion->obtenerDatosEliminar();
-    $erroresValidar = $institucion->validarDatosEliminar($datos);
+
+    $datos = Institucion::obtenerDatosEliminarInstitucion();
+    $erroresValidar = Institucion::validarDatosEliminarInstitucion($datos);
 
     if (empty($erroresValidar)) {
         $nombreInstitucion = $datos['nombre_institucion'];
+        $id_profesor = $datos['id_profesor'];
 
-        if ($institucion->eliminarInstitucion($conn, $nombreInstitucion)) {
-            echo json_encode(['estado' => 'exito', 'mensaje' => 'Institución eliminada con éxito.', 'errores' => []]);
+        if (Institucion::eliminarInstitucion($conn, $nombreInstitucion, $id_profesor)) {
+            echo json_encode(['estado' => 'exito', 'mensaje' => 'Institución eliminada con éxito.']);
         } else {
-            echo json_encode(['estado' => 'error', 'mensaje' => 'Error al eliminar la institución.', 'errores' => []]);
+            echo json_encode(['estado' => 'error', 'mensaje' => 'Error al eliminar la institución.']);
         }
     } else {
         echo json_encode(['estado' => 'error', 'mensaje' => 'Errores en la validación.', 'errores' => $erroresValidar]);
     }
 } else {
-    echo json_encode(['estado' => 'error', 'mensaje' => 'No se envió por POST.', 'errores' => []]);
+    echo json_encode(['estado' => 'error', 'mensaje' => 'No se envió por POST.']);
 }
-?>

@@ -5,35 +5,29 @@ require_once 'autoLoader.php';
 $database = new Database();
 $conn = $database->connect();
 
-// Verifica si el método de solicitud es POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Inicializa la clase Asistencia
-    $asistencia = new Asistencia('', '', '', ''); 
+    //json_decode función que toma un string en formato JSON y lo convierte en un tipo de dato de PHP.
+    // segundo parámetro de json_decode, el resultado puede ser un objeto o un array. en este caso un array 
+ 
+    $data = json_decode($_POST['asistencias'], true);
+    $errores = []; 
 
-    // Obtiene los datos de asistencia directamente desde la solicitud POST
-    $datos = json_decode($_POST['asistencias'], true); // Convertir JSON a array
+    $fecha = $_POST['fecha'];
+    $id_materia = $_POST['id_materia'];
 
-    $errores = []; // Inicializa el array de errores
-    foreach ($datos as $entrada) {
-        // Establece los valores directamente desde el array
-        $asistencia->setFecha($_POST['fecha']);
-        $asistencia->setEstado($entrada['estado']); 
-        $asistencia->setIdAlumno($entrada['id_alumno']);
-        $asistencia->setIdMateria($_POST['id_materia']);
+    foreach ($data as $datos) { 
+        $asistencia = new Asistencia($fecha, $datos['estado'],$datos['id_alumno'], $id_materia);
 
-        // Intenta guardar la asistencia
         if (!$asistencia->crearAsistencia($conn)) {
-            $errores[] = "Error al registrar asistencia para el alumno ID " . $entrada['id_alumno'] . ".";
+            $errores[] = "Error al registrar asistencia.";
         }
     }
-
-    // Si no hay errores, se devuelve un mensaje de éxito
+    
     if (empty($errores)) {
         echo json_encode(['estado' => 'exito', 'mensaje' => 'Asistencias registradas con éxito.']);
     } else {
         echo json_encode(['estado' => 'error', 'mensaje' => 'Errores al registrar asistencias.', 'errores' => $errores]);
     }
-
 } else {
-    echo json_encode(['estado' => 'error', 'mensaje' => 'No se envió por POST.', 'errores' => []]);
+    echo json_encode(['estado' => 'error', 'mensaje' => 'No se envió por POST.']);
 }

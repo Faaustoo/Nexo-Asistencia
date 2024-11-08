@@ -15,6 +15,7 @@
     </div>
 
     <div class="main-content">
+
         <div class="institucion-container">
             <button type="button" id="crear-materia">CREAR MATERIA</button> 
             <button type="button" id="eliminar-materia">ELIMINAR MATERIA</button>
@@ -22,6 +23,42 @@
             <div class="instituciones" id="lista-materias"></div>
         </div>
         <div class="contenido-container">
+
+            <div class="ram-container">
+    
+                <div id="ram">
+                    <h2>Datos de RAM</h2>
+                </div>
+                <div class="form-container" style="display: none;" id="formularioEditarRam">
+                    <p>Editar datos de RAM</p>
+                    <form id="formDatosRam" method="post">
+                        <div class="info-form-container"> 
+                            <label for="porcentaje_promocion">Porcentaje Promoción:</label>
+                            <input type="number" id="porcentaje_promocion" name="porcentaje_promocion" > 
+            
+                            <label for="porcentaje_regular">Porcentaje Regular:</label>
+                            <input type="number" id="porcentaje_regular" name="porcentaje_regular">
+            
+                            <label for="nota_promocion">Nota Promoción:</label>
+                            <input type="number" id="nota_promocion" name="nota_promocion" >
+            
+                            <label for="nota_regular">Nota Regular:</label>
+                            <input type="number" id="nota_regular" name="nota_regular" >
+
+                            <button type='submit' id="guardar-cambios">Guardar Cambios</button>
+                        </div>
+                        <div class ="cerrar-editar"><button type="button" id="cerrar-editar">CERRAR</button></div>
+                        <div class="mensajes-exito-ram">
+                            <div id="resultado-editar"></div>
+                        </div>
+                        <div class="mensajes-error-ram">
+                            <div id="error-editar" class="error"></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+
             <div class="form-container" style="display: none;" id="formularioMateria">
                 <p>Ingresar datos de las materias</p>
                 <form id="formDatosMateria" method="post">
@@ -63,5 +100,6 @@
     </div>
 </div>
 <script src="App/Resources/JS/registroMateria.js" ></script>
+<script src="App\Resources\JS\ram.js"></script>
 </body>
 </html>

@@ -1,11 +1,16 @@
+
 const url = new URLSearchParams(window.location.search);
 const institucionId = url.get('id');
 
 document.getElementById('crear-materia').addEventListener('click', function () {
     const formulario = document.getElementById('formularioMateria');
     const formularioEliminar = document.getElementById('formularioEliminarMateria');
+    const formularioRam = document.getElementById('formularioEditarRam');
+    const tablaRam = document.getElementById('ram');
     formularioEliminar.style.display = 'none'; 
     formulario.style.display = 'block'; 
+    tablaRam.style.display = 'none'; 
+    formularioRam.style.display = 'none'; 
     document.getElementById('nombre_materia').value = '';
     document.getElementById('descripcion_materia').value = '';
     document.getElementById('resultado').innerHTML = ''; 
@@ -15,6 +20,10 @@ document.getElementById('crear-materia').addEventListener('click', function () {
 document.getElementById('eliminar-materia').addEventListener('click', function () {
     const formulario = document.getElementById('formularioMateria');
     const formularioEliminar = document.getElementById('formularioEliminarMateria');
+    const formularioRam = document.getElementById('formularioEditarRam');
+    const tablaRam = document.getElementById('ram');
+    formularioRam.style.display = 'none'; 
+    tablaRam.style.display = 'none';
     formularioEliminar.style.display = 'block'; 
     formulario.style.display = 'none'; 
 });
@@ -22,7 +31,10 @@ document.getElementById('eliminar-materia').addEventListener('click', function (
 document.getElementById('cerrar-materia').addEventListener('click', function () {
     console.log('click');
     const formularioMateria=document.getElementById('formularioMateria');
+    const tablaRam = document.getElementById('ram');
+    
     formularioMateria.style.display='none';
+    tablaRam.style.display = 'block';
     document.getElementById('resultado-eliminar').innerHTML = ''; 
     document.getElementById('error-eliminar').innerHTML = ''; 
 });
@@ -31,18 +43,22 @@ document.getElementById('cerrar-eliminar').addEventListener('click', function ()
     console.log('click');
     formularioMateria=document.getElementById('formularioMateria');
     const formularioEliminar = document.getElementById('formularioEliminarMateria');
+    const tablaRam = document.getElementById('ram');
     formularioMateria.style.display='none';
     formularioEliminar.style.display = 'none'; 
+    tablaRam.style.display = 'block';
     document.getElementById('nombre_materia_eliminar').value = ''; 
     document.getElementById('resultado-eliminar').innerHTML = ''; 
     document.getElementById('error-eliminar').innerHTML = ''; 
 });
 
 let formularioMateria =document.getElementById('formDatosMateria');
-formularioMateria.addEventListener('submit', function (e) {
-    e.preventDefault();
+formularioMateria.addEventListener('submit', function (event) {
+    event.preventDefault();
     const datos = new FormData(formularioMateria); 
     datos.append('id_institucion', institucionId);
+
+    
     document.getElementById('resultado').innerHTML = '';
     document.getElementById('error').innerHTML = '';
 
@@ -54,6 +70,8 @@ formularioMateria.addEventListener('submit', function (e) {
     .then(data => {
         if (data.estado === 'exito') {
             document.getElementById('resultado').innerHTML = data.mensaje;
+            //recargo la pagina despues de 1 segundo.
+            setTimeout(() => {location.reload();}, 1000);
         } else if (data.estado === 'error') {
             if (data.errores) {
                 data.errores.forEach(error => {
@@ -69,10 +87,16 @@ formularioMateria.addEventListener('submit', function (e) {
         document.getElementById('error').innerHTML = 'Error al usar fetch: ' + error;
     });
 });
+
 let formularioElimiarMateria =document.getElementById('formDatosEliminarMateria');
 formularioElimiarMateria.addEventListener('submit', function (e) {
     e.preventDefault();
     let datos = new FormData(formularioElimiarMateria); 
+    datos.append('id_institucion', institucionId);
+
+    for (let pair of datos.entries()) {
+        console.log(pair[0] + ': ' + pair[1]);
+    }
 
     fetch('eliminarMateria.php', { 
         method: 'POST',
@@ -84,7 +108,8 @@ formularioElimiarMateria.addEventListener('submit', function (e) {
         document.getElementById('error-eliminar').innerHTML = '';
 
         if (data.estado === 'exito') {
-            document.getElementById('resultado-eliminar').innerHTML = data.mensaje; 
+            document.getElementById('resultado-eliminar').innerHTML = data.mensaje;
+            setTimeout(() => {location.reload();}, 1000);
         } else if (data.estado === 'error') {
             if (data.errores) {
                 data.errores.forEach(error => {
@@ -101,37 +126,42 @@ formularioElimiarMateria.addEventListener('submit', function (e) {
     });
 });
 
-function cargarMaterias() {
-    const datos = new FormData();
-    datos.append('id_institucion', institucionId);
+document.addEventListener('DOMContentLoaded', function() {
+    const url = new URLSearchParams(window.location.search);
+    const institucionId = url.get('id');
 
-    fetch('obtenerMaterias.php', { 
-        method: 'POST',
-        body: datos
-    })
-    .then(res => res.json())
-    .then(data => {
-        const listaMaterias = document.getElementById('lista-materias');
-        if (listaMaterias) {
-            listaMaterias.innerHTML = '';
-            if (data.estado === 'exito') {
-                if (Array.isArray(data.materias)) {
-                    data.materias.forEach(materia => {
-                        listaMaterias.innerHTML += `
-                        <div style="margin: 5px 0;">
-                        <a href="tercerPagina.html?id=${materia.id_materia}" style="display: block; margin: 5px 0;" class="materia-link">
-                        ${materia.nombre}</a></div>
-                        `;
-                    });
-                } else {
-                    listaMaterias.innerHTML = '<p>No hay materias disponibles.</p>';
+    function cargarMaterias() {
+        const datos = new FormData();
+        datos.append('id_institucion', institucionId);
+
+        fetch('obtenerMaterias.php', { 
+            method: 'POST',
+            body: datos
+        })
+        .then(res => res.json())
+        .then(data => {
+            const listaMaterias = document.getElementById('lista-materias');
+            if (listaMaterias) {
+                listaMaterias.innerHTML = '';
+                if (data.estado === 'exito') {
+                    if (Array.isArray(data.materias)) {
+                        data.materias.forEach(materia => {
+                            listaMaterias.innerHTML += `
+                            <div style="margin: 5px 0;">
+                            <a href="tercerPagina.html?id=${materia.id_materia}" style="display: block; margin: 5px 0;" class="materia-link">
+                            ${materia.nombre}</a></div>
+                            `;
+                        });
+                    } else {
+                        listaMaterias.innerHTML = '<p>No hay materias disponibles.</p>';
+                    }
                 }
             }
-        }
-    })
-    .catch(error => {
-        console.error('Error al obtener materias:', error);
-    });
-}
+        })
+        .catch(error => {
+            console.error('Error al obtener materias:', error);
+        });
+    }
 
-document.addEventListener('DOMContentLoaded', cargarMaterias);
+    cargarMaterias();
+});

@@ -15,6 +15,7 @@ formulario.addEventListener('submit', function(e) {
         document.getElementById('error').innerHTML = '';
         if (data.estado === 'exito') {
             document.getElementById('resultado').innerHTML = data.mensaje;
+            setTimeout(() => {window.location.href =`index.html`;}, 1000);
         } else if (data.estado === 'error') {
             if (data.errores) {
                 document.getElementById('error').innerHTML = data.errores.join('<br>');

@@ -11,13 +11,13 @@ formulario.addEventListener('submit', function(e) {
     })
     .then(res => res.json())
     .then(data => {
-        console.log(data);
+        console.log(data.id_profesor);
 
         document.getElementById('resultado').innerHTML = '';
         document.getElementById('error').innerHTML = '';
 
         if (data.estado === 'exito') {
-            window.location.href = 'paginaPrincipal.html';  
+            window.location.href =`paginaPrincipal.html?id=${data.id_profesor}`;  
         } else if (data.estado === 'error') {
             if (data.errores) {
                 document.getElementById('error').innerHTML = data.errores.join('<br>');

@@ -1,16 +1,13 @@
 <?php
 require_once 'Persona.php';
-
 require_once 'App\Traits\ValidarAlumno.php';
 
 use App\Traits\ValidarAlumno;
 
-
 class Alumno extends Persona {
-
     use ValidarAlumno;
-    
-    private $table = 'alumnos';
+
+    private static $table = 'alumnos';
     private $id_alumno;
     private $fecha_nacimiento;
     private $id_materia;
@@ -21,20 +18,9 @@ class Alumno extends Persona {
         $this->id_materia = $id_materia;
     }
 
+    // Getters
     public function getIdAlumno() {
         return $this->id_alumno;
-    }
-
-    public function getNombre() {
-        return $this->nombre;
-    }
-
-    public function getApellido() {
-        return $this->apellido;
-    }
-
-    public function getDni() {
-        return $this->dni;
     }
 
     public function getFechaNacimiento() {
@@ -45,20 +31,9 @@ class Alumno extends Persona {
         return $this->id_materia;
     }
 
+    // Setters
     public function setIdAlumno($id_alumno) {
-        $this->id_alumno= $id_alumno;
-    }
-    public function setNombre($nombre) {
-        $this->nombre = $nombre; 
-    }
-    public function setApellido($apellido) {
-        $this->apellido = $apellido; 
-    }
-    public function setDni($dni) {
-        $this->dni = $dni; 
-    }
-    public function setEmail($email) {
-        $this->email = $email; 
+        $this->id_alumno = $id_alumno;
     }
 
     public function setFechaNacimiento($fecha_nacimiento) {
@@ -70,26 +45,16 @@ class Alumno extends Persona {
     }
 
     public function crearAlumno($conn) {
-        
-        $nombre = $this->getNombre();
-        $apellido = $this->getApellido();
-        $dni = $this->getDni();
-        $email = $this->getEmail();
-        $fecha_nacimiento = $this->getFechaNacimiento();
-        $id_materia = $this->getIdMateria();
-
-        $query = "INSERT INTO alumnos (nombre, apellido, dni, email, fecha_nacimiento, id_materia) 
+        $query = "INSERT INTO " . self::$table . " (nombre, apellido, dni, email, fecha_nacimiento, id_materia) 
                 VALUES (:nombre, :apellido, :dni, :email, :fecha_nacimiento, :id_materia)";
         
         $stmt = $conn->prepare($query);
-        
-        $stmt->bindParam(':nombre', $nombre);
-        $stmt->bindParam(':apellido', $apellido);
-        $stmt->bindParam(':dni', $dni);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':fecha_nacimiento', $fecha_nacimiento);
-        $stmt->bindParam(':id_materia', $id_materia);
-    
+        $stmt->bindParam(':nombre', $this->nombre);
+        $stmt->bindParam(':apellido', $this->apellido);
+        $stmt->bindParam(':dni', $this->dni);
+        $stmt->bindParam(':email', $this->email);
+        $stmt->bindParam(':fecha_nacimiento', $this->fecha_nacimiento);
+        $stmt->bindParam(':id_materia', $this->id_materia);
     
         if ($stmt->execute()) {
             $this->id_alumno = $conn->lastInsertId(); 
@@ -100,8 +65,8 @@ class Alumno extends Persona {
 
     public function existe($data, $conn) {
         $errores = [];
-    
-        $query = "SELECT * FROM alumnos WHERE dni = :dni OR email = :email";
+        $query = "SELECT * FROM " . self::$table . " WHERE dni = :dni OR email = :email";
+        
         $stmt = $conn->prepare($query);
         $stmt->bindParam(':dni', $data['dni']);
         $stmt->bindParam(':email', $data['email']);
@@ -114,29 +79,36 @@ class Alumno extends Persona {
         return $errores;
     }
 
-    public function obtenerAlumnosPorMateria($id_materia, $conn) {
-        // Modifica la consulta para ordenar por apellido
-        $query = "SELECT * FROM alumnos WHERE id_materia = :id_materia ORDER BY apellido ASC"; 
+    public static function obtenerAlumnosPorMateria($id_materia, $conn) {
+        $query = "SELECT * FROM alumnos WHERE id_materia = :id_materia";
         $stmt = $conn->prepare($query);
-        $stmt->bindParam(':id_materia', $id_materia);
-        $stmt->execute();
-    
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt->bindParam(':id_materia', $id_materia, PDO::PARAM_INT);
+        
+        if ($stmt->execute()) {
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+
+            return false;
+        }
     }
+
     
-    
-    public function editarAlumno($id_alumno, $conn) {
+    public function editarAlumno($conn, $id_alumno) {
         $nombre = $this->getNombre();
         $apellido = $this->getApellido();
         $dni = $this->getDni();
         $email = $this->getEmail();
-        $fecha_nacimiento = $this->getFechaNacimiento();
-        $id_materia = $this->getIdMateria();
+        $fecha_nacimiento = $this->getFechaNacimiento(); 
+        $id_materia = $this->getIdMateria(); 
     
-        $query = "UPDATE alumnos SET nombre = :nombre, apellido = :apellido, 
-                  dni = :dni, email = :email, fecha_nacimiento = :fecha_nacimiento, 
-                  id_materia = :id_materia 
-                  WHERE id_alumno = :id_alumno";
+        $query = "UPDATE alumnos 
+                SET nombre = :nombre, 
+                    apellido = :apellido, 
+                    dni = :dni, 
+                    email = :email, 
+                    fecha_nacimiento = :fecha_nacimiento,
+                    id_materia = :id_materia
+                WHERE id_alumno = :id_alumno"; 
     
         $stmt = $conn->prepare($query);
         $stmt->bindParam(':nombre', $nombre);
@@ -145,21 +117,34 @@ class Alumno extends Persona {
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':fecha_nacimiento', $fecha_nacimiento);
         $stmt->bindParam(':id_materia', $id_materia);
-        $stmt->bindParam(':id_alumno', $id_alumno); // Corregido: Debe ser id_alumno
+        $stmt->bindParam(':id_alumno', $id_alumno); 
     
         return $stmt->execute();
     }
     
-    public function eliminarAlumno($id_alumno, $conn) {
-        $query = "DELETE FROM alumnos WHERE id_alumno = :id_alumno"; 
+
+    public static function eliminarAlumno($id_alumno, $conn) {
+        $query = "DELETE FROM " . self::$table . " WHERE id_alumno = :id_alumno"; 
         $stmt = $conn->prepare($query);
         $stmt->bindParam(':id_alumno', $id_alumno);
-        if ($stmt->execute()) {
-            return $stmt->rowCount() > 0; 
+        
+        return $stmt->execute() && $stmt->rowCount() > 0; 
+    }
+
+    public static function dniExisteParaMateria($dni, $id_materia, $conn) {
+        $query = "SELECT * FROM " . self::$table . " WHERE dni = :dni AND id_materia = :id_materia";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':dni', $dni);
+        $stmt->bindParam(':id_materia', $id_materia);
+        $stmt->execute();
+    
+        if ($stmt->rowCount() > 0) {
+            return true;
         }
         return false;
     }
     
+    
 }
 
-
+?>

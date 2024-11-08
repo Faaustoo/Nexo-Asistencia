@@ -1,30 +1,29 @@
-<?php 
+<?php
 session_start(); 
 require_once 'autoLoader.php';
+
+header('Content-Type: application/json');
 
 $database = new Database();
 $conn = $database->connect();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $id_profesor = $_SESSION['id_profesor'];
     
-    $institucion = new Institucion('', '', '', $id_profesor); 
-    $data = $institucion->obtenerDatos(); 
-    $erroresValidar = $institucion->validarDatos($data);
-
-    $institucion->setCue($data['cue_institucion']); 
-    if ($institucion->existeCue($conn)) {
-        $erroresValidar[] = 'El CUE ya existe en la base de datos.'; 
-    }
+    $data = Institucion::obtenerDatosInstitucion(); 
+    $erroresValidar = Institucion::validarDatosInstitucion($data);
 
     if (empty($erroresValidar)) {
-        $institucion->setNombre($data['nombre_institucion']);
-        $institucion->setDireccion($data['direccion_institucion']);
-        
-        if ($institucion->crearInstitucion($conn)) { 
-            $id_institucion = $conn->lastInsertId();
-            $_SESSION['id_institucion'] = $id_institucion; 
-            echo json_encode(['estado' => 'exito', 'mensaje' => 'Institución creada con éxito.', 'id_institucion' => $id_institucion]);
+        $institucion = new Institucion($data['nombre_institucion'], $data['direccion_institucion'], $data['cue_institucion'], $data['id_profesor']);
+
+        if ($institucion->crearInstitucion($conn)) {
+            $idInstitucion = $conn->lastInsertId();
+            
+            $ram = new Ram(70, 60, 7, 6, $idInstitucion); 
+            if ($ram->crearRam($conn)) {
+                echo json_encode(['estado' => 'exito', 'mensaje' => 'Institución creada.', 'id_institucion' => $idInstitucion]);
+            } else {
+                echo json_encode(['estado' => 'error', 'mensaje' => 'Institución creada, pero error al crear RAM.']);
+            }
         } else {
             echo json_encode(['estado' => 'error', 'mensaje' => 'Error al crear la institución.']);
         }
@@ -34,4 +33,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 } else {
     echo json_encode(['estado' => 'error', 'mensaje' => 'No se envió por POST.']);
 }
-?>

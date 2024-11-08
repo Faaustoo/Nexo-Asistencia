@@ -7,7 +7,7 @@ class Institucion {
 
     use ValidarInstitucion;
     
-    private $table = 'instituciones'; 
+    private static $table = 'instituciones';
     private $id_institucion;           
     private $nombre;                 
     private $direccion;   
@@ -60,55 +60,52 @@ class Institucion {
         $this->cue = $cue;
     }
 
-    public function crearInstitucion($db) {
+    public function setIdProfesor($id_profesor){
+        $this->id_profesor = $id_profesor;
+    }
+
+    public function crearInstitucion($conn) {
         $nombre = $this->getNombre();
         $direccion = $this->getDireccion();
         $cue = $this->getCue();
         $id_profesor = $this->getIdProfesor(); 
     
         
-        $query = "INSERT INTO " . $this->table . " (nombre, direccion, cue, id_profesor) 
-                  VALUES (:nombre, :direccion, :cue, :id_profesor)";
+        $query = "INSERT INTO " .self::$table . " (nombre, direccion, cue, id_profesor) 
+                VALUES (:nombre, :direccion, :cue, :id_profesor)";
     
-        $stmt = $db->prepare($query);
+        $stmt = $conn->prepare($query);
         $stmt->bindParam(':nombre', $nombre);
         $stmt->bindParam(':direccion', $direccion);
         $stmt->bindParam(':cue', $cue);
         $stmt->bindParam(':id_profesor', $id_profesor);
         
         if ($stmt->execute()) {
-            $this->id_institucion = $db->lastInsertId();
+            $this->id_institucion = $conn->lastInsertId();
             return true;
         }
         return false;
     }
     
-    
-    public function obtenerInstitucionesProfesor($conn) {
-        $query = "SELECT * FROM " . $this->table . " WHERE id_profesor = :id_profesor";
+    public static function obtenerInstitucionesPorProfesor($conn, $id_profesor) {
+        $query = "SELECT * FROM " . self::$table . " WHERE id_profesor = :id_profesor";
         $stmt = $conn->prepare($query);
-
-        $stmt->bindParam(':id_profesor', $this->id_profesor, PDO::PARAM_INT);
+        $stmt->bindParam(':id_profesor', $id_profesor, PDO::PARAM_INT);
         $stmt->execute();
         
         return $stmt->fetchAll(PDO::FETCH_ASSOC); 
     }
 
-    public function existeCue($db) {
-        $cue = $this->getCue();
-        $queryCheck = "SELECT COUNT(*) FROM " . $this->table . " WHERE cue = :cue";
-        $stmtCheck = $db->prepare($queryCheck);
-        $stmtCheck->bindParam(':cue', $cue);
-        $stmtCheck->execute();
-        return $stmtCheck->fetchColumn() > 0; 
-    }
-
-    public function eliminarInstitucion($conn, $nombre) {
-        $sql = "DELETE FROM " . $this->table . " WHERE nombre = :nombre"; 
+    public static function eliminarInstitucion($conn, $nombre, $id_profesor) {
+        $sql = "DELETE FROM " . self::$table . " WHERE nombre = :nombre AND id_profesor = :id_profesor"; 
+        
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':nombre', $nombre, PDO::PARAM_STR);
+        $stmt->bindParam(':id_profesor', $id_profesor, PDO::PARAM_INT);
+    
         return $stmt->execute();
     }
+    
     
 }
 ?>

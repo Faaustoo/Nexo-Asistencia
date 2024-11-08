@@ -1,5 +1,13 @@
 <?php
+
+require_once 'App\Traits\ValidarNotas';
+
+use App\Traits\ValidarNotas;
+
 class Nota {
+
+    use ValidarNotas;
+
     private $table = 'notas';
     private $id_nota;
     private $parcial1;
@@ -43,7 +51,6 @@ class Nota {
     public function setParcial1($parcial1) {
         $this->parcial1 = $parcial1;
     }
-    
 
     public function setParcial2($parcial2) {
         $this->parcial2 = $parcial2;
@@ -54,65 +61,86 @@ class Nota {
     }
 
     public function insertarNota($conn) {
-        $query = "INSERT INTO $this->table (parcial1, parcial2, trabajo_final, id_alumno, id_materia) 
-                  VALUES (:parcial1, :parcial2, :trabajo_final, :id_alumno, :id_materia)";
-        
-        $stmt = $conn->prepare($query);
+        $sql = "INSERT INTO " . $this->table . " (parcial1, parcial2, trabajo_final, id_alumno, id_materia) 
+            VALUES (:parcial1, :parcial2, :trabajo_final, :id_alumno, :id_materia)";
 
+        $stmt = $conn->prepare($sql);
         $stmt->bindParam(':parcial1', $this->parcial1);
         $stmt->bindParam(':parcial2', $this->parcial2);
         $stmt->bindParam(':trabajo_final', $this->trabajo_final);
         $stmt->bindParam(':id_alumno', $this->id_alumno);
         $stmt->bindParam(':id_materia', $this->id_materia);
-        if ($stmt->execute()) {
-            return true;
-        } else {
-            return false;
-        }
+
+        return $stmt->execute();
     }
 
-    public function obtenerDatosAlumnos($id_materia, $conn) {
+    public function editarNota($conn, $id_alumno, $id_materia) {
+        $sql = "UPDATE " . $this->table . " 
+                SET parcial1 = :parcial1, 
+                    parcial2 = :parcial2, 
+                    trabajo_final = :trabajo_final
+                WHERE id_alumno = :id_alumno AND id_materia = :id_materia";  
+        
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':parcial1', $this->parcial1);
+        $stmt->bindParam(':parcial2', $this->parcial2);
+        $stmt->bindParam(':trabajo_final', $this->trabajo_final);
+        $stmt->bindParam(':id_alumno', $id_alumno);  
+        $stmt->bindParam(':id_materia', $id_materia);  
+        
+        return $stmt->execute();  
+    }
+    
+    
+
+    public static function obtenerEstadosAsistenciasPorAlumno($id_materia, $conn) {
+    $query = "SELECT asistencias.id_alumno, asistencias.estado AS estado_asistencia, materias.id_institucion 
+            FROM asistencias
+            JOIN materias ON asistencias.id_materia = materias.id_materia 
+            WHERE asistencias.id_materia = :id_materia 
+            ORDER BY asistencias.id_alumno";
+
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':id_materia', $id_materia, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC); 
+}
+
+    
+    public static function obtenerDatosCompletosPorAlumno($id_materia, $conn) {
         $query = "SELECT 
                     alumnos.id_alumno,
                     alumnos.nombre,
                     alumnos.apellido,
                     alumnos.dni,
-                    alumnos.email,
                     notas.parcial1,
                     notas.parcial2,
-                    notas.trabajo_final
-                    FROM 
-                        alumnos
-                    LEFT JOIN 
-                        notas ON alumnos.id_alumno = notas.id_alumno 
-                    AND notas.id_materia = :id_materia";
+                    notas.trabajo_final,
+                    notas.condicion AS estado
+                FROM alumnos
+                INNER JOIN notas ON alumnos.id_alumno = notas.id_alumno
+                WHERE notas.id_materia = :id_materia";
     
         $stmt = $conn->prepare($query);
         $stmt->bindParam(':id_materia', $id_materia, PDO::PARAM_INT);
         $stmt->execute();
-        
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC); 
     }
     
 
-    public function obtenerEstadosAsistenciasPorAlumno($id_materia, $conn) {
-        $query = "SELECT 
-                    asistencias.id_alumno, 
-                    asistencias.estado AS estado_asistencia 
-                    FROM 
-                    asistencias 
-                    WHERE 
-                    asistencias.id_materia = :id_materia 
-                    ORDER BY 
-                    asistencias.id_alumno"; 
-    
+    public static function obtenerDatosRam($conn, $idInstitucion) {
+        $query = "SELECT * FROM ram WHERE id_institucion = :id_institucion";
+        
         $stmt = $conn->prepare($query);
-        $stmt->bindParam(':id_materia', $id_materia, PDO::PARAM_INT);
+        $stmt->bindParam(':id_institucion', $idInstitucion, PDO::PARAM_INT);
         $stmt->execute();
         
-        return  $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-
+    
 }
+    
+
 ?>

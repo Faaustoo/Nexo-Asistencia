@@ -51,7 +51,6 @@ class Profesor extends Persona {
                 VALUES (:nombre, :apellido, :dni, :email, :contrasena, :numero_legajo)";
     
         $stmt = $conn->prepare($query);
-    
         $stmt->bindParam(':nombre', $nombre);
         $stmt->bindParam(':apellido', $apellido);
         $stmt->bindParam(':dni', $dni);
@@ -66,14 +65,31 @@ class Profesor extends Persona {
         return false;
     }
 
-    public function obtenerProfesores($conn) {
-        $query = "SELECT * FROM " . $this->table; 
+    public static function obtenerProfesores($conn) { 
+        $query = "SELECT * FROM profesores";
         $stmt = $conn->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC); 
     }
 
-    
+    //// Valido el  inicio de sesión de un profesor, comparando el correo y la contraseña.
+    public static function validarLogin($email, $contrasena, $profesores) { 
+        foreach ($profesores as $profesor) {
+            if ($profesor['email'] === $email) {
+                if (password_verify($contrasena, $profesor['contrasena'])) {
+                    return [
+                        'id_profesor' => $profesor['id_profesor'], 
+                        'apellido' => $profesor['apellido'],
+                        'dni' => $profesor['dni'],
+                        'email' => $profesor['email'],
+                        'legajo' => $profesor['numero_legajo'],
+                    ];
+                }
+            }
+        }
+        return null; 
+    }
+
 public function actualizarProfesor($conn, $id_profesor) {
     $nombre = $this->getNombre();
     $apellido = $this->getApellido();
@@ -86,7 +102,6 @@ public function actualizarProfesor($conn, $id_profesor) {
             WHERE id_profesor = :id_profesor";
 
     $stmt = $conn->prepare($query);
-
     $stmt->bindParam(':nombre', $nombre);
     $stmt->bindParam(':apellido', $apellido);
     $stmt->bindParam(':dni', $dni);
@@ -105,7 +120,7 @@ public function actualizarProfesor($conn, $id_profesor) {
         return $stmt->execute();
     }
     
-    public function existe($data, $conn) {
+    public static function existe($data, $conn) {
         $errores = [];
     
         $query = "SELECT * FROM profesores WHERE dni = :dni";
@@ -113,11 +128,9 @@ public function actualizarProfesor($conn, $id_profesor) {
         $stmt->bindParam(':dni', $data['dni']);
         $stmt->execute();
         $stmt->setFetchMode(PDO::FETCH_ASSOC); 
-    
         if ($stmt->rowCount() > 0) {
             $errores[] = "El DNI ya existe.";
         }
-    
     
         $query = "SELECT * FROM profesores WHERE email = :email";
         $stmt = $conn->prepare($query);
@@ -131,29 +144,12 @@ public function actualizarProfesor($conn, $id_profesor) {
         $stmt = $conn->prepare($query);
         $stmt->bindParam(':numero_legajo', $data['numero_legajo']);
         $stmt->execute();
-        
+    
         if ($stmt->rowCount() > 0) {
             $errores[] = "El número de legajo ya existe.";
         }
     
         return $errores;
-    }
-
-    public function validarLogin($email, $contrasena, $profesores) {
-        foreach ($profesores as $profesor) {
-            if ($profesor['email'] === $email) {
-                if (password_verify($contrasena, $profesor['contrasena'])) {
-                    return [
-                        'id_profesor' => $profesor['id_profesor'], 
-                        'apellido' => $profesor['apellido'],
-                        'dni' => $profesor['dni'],
-                        'email' => $profesor['email'],
-                        'legajo' => $profesor['numero_legajo'],
-                    ];
-                }
-            }
-        }
-        return null; 
     }
     
 }

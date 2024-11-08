@@ -5,33 +5,27 @@ require_once 'autoLoader.php';
 $database = new Database();
 $conn = $database->connect(); 
 
-if (!$conn) {
-    echo json_encode(['estado' => 'error', 'mensaje' => 'Error de conexión a la base de datos.', 'errores' => []]);
-    exit; // Detener la ejecución si no hay conexión
-}
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Crear una instancia de la clase Asistencia
-    $asistencia = new Asistencia('', '', '', '');
 
-    $datos = $asistencia->obtenerFechaEliminar(); 
-    $errores = $asistencia->validarFechaEliminar($datos); 
+    // Obtener los datos
+    $datos = Asistencia::obtenerEliminar(); 
+    $errores = Asistencia::validarEliminar($datos); 
 
     if (empty($errores)) {
         $fecha = $datos['fecha'];
-       
-        // Verificar si existe la asistencia antes de eliminar
-        if ($asistencia->existeAsistencia($conn, $fecha)) {
-            if ($asistencia->eliminarAsistencia($conn, $fecha)) {
-                echo json_encode(['estado' => 'exito', 'mensaje' => 'Asistencias eliminadas con éxito.', 'errores' => []]);
+        $id_alumno = $datos['id'];
+
+        if (Asistencia::existeAsistencia($conn, $fecha, $id_alumno)) {
+            if (Asistencia::actualizarAsistencia($conn, $fecha, $id_alumno)) {
+                echo json_encode(['estado' => 'exito', 'mensaje' => 'La asistencia ha sido cambiada de Presente a Ausente con éxito.']);
             } else {
-                echo json_encode(['estado' => 'error', 'mensaje' => 'Error al eliminar las asistencias.', 'errores' => []]);
+                echo json_encode(['estado' => 'error', 'mensaje' => 'Error al actualizar el estado de la asistencia.', 'errores' => []]);
             }
         } else {
-            echo json_encode(['estado' => 'error', 'mensaje' => 'No hay asistencias registradas para la fecha indicada.', 'errores' => []]);
+            echo json_encode(['estado' => 'error', 'mensaje' => 'No hay asistencias registradas para la fecha y Alumno seleccionado.', 'errores' => []]);
         }
     } else {
-        echo json_encode(['estado' => 'error', 'mensaje' => 'Errores de validación.', 'errores' => $errores]);
+        echo json_encode(['estado' => 'error', 'mensaje' => $errores]);
     }
 } else {
     echo json_encode(['estado' => 'error', 'mensaje' => 'No se envió por POST.', 'errores' => []]);

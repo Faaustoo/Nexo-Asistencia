@@ -6,21 +6,14 @@ $database = new Database();
 $conn = $database->connect();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $alumno = new Alumno('', '', '', '', '', ''); 
-    $datos = $alumno->obtenerDatos(); // Asegúrate de que esto obtenga los datos correctamente
-
-    $erroresValidar = $alumno->validarDatos($datos);
-    $id_alumno = $_POST['id_alumno']; // Cambié esto para acceder correctamente a los datos
+    $id_alumno = $_POST['id_alumno'];
+    $datos = Alumno::obtenerDatos(); 
+    $erroresValidar = Alumno::validarDatos($datos);
 
     if (empty($erroresValidar)) {
-        $alumno->setNombre($datos['nombre']);
-        $alumno->setApellido($datos['apellido']);
-        $alumno->setDni($datos['dni']);
-        $alumno->setEmail($datos['email']);
-        $alumno->setFechaNacimiento($datos['fecha_nacimiento']);
-        $alumno->setIdMateria($datos['id_materia']); 
-
-        if ($alumno->editarAlumno($id_alumno, $conn)) {
+        $alumno = new Alumno($datos['nombre'], $datos['apellido'], $datos['dni'], $datos['email'], $datos['fecha_nacimiento'], $datos['id_materia']);
+        
+        if ($alumno->editarAlumno($conn,$id_alumno)) {
             echo json_encode(['estado' => 'exito', 'mensaje' => 'Alumno editado con éxito.']);
         } else {
             echo json_encode(['estado' => 'error', 'mensaje' => 'Error al editar el alumno.']);

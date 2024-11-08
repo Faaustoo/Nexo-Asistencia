@@ -12,7 +12,7 @@ body {
 }
 h1{
     font-family: 'Press Start 2P', cursive;
-    font-size: 80px; /* Tamaño del texto */
+    font-size: 80px;
     margin-right: 200px;
 }
 .login-container {
@@ -23,7 +23,7 @@ h1{
     min-width: 360px;
     text-align: left; 
     max-height: 80vh; /* Limita la altura máxima */
-    overflow-y: auto; /* Agrega scroll vertical si es necesario */
+    overflow-y: auto; /* Agrega scroll */
 }
 
 .fila {

@@ -6,14 +6,11 @@ $database = new Database();
 $conn = $database->connect();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $materia = new Materia('', ''); 
-    $data = $materia->obtenerDatos(); 
-    $erroresValidar = $materia->validarDatos($data);
-
+    $data = Materia::obtenerDatos(); 
+    $erroresValidar = Materia::validarDatos($data);
+    
     if (empty($erroresValidar)) {
-        $materia->setNombre($data['nombre_materia']);
-        $materia->setIdInstitucion($data['id_institucion']);
-
+        $materia = new Materia($data['nombre_materia'], $data['id_institucion']); 
         if ($materia->crearMateria($conn)) {
             echo json_encode(['estado' => 'exito', 'mensaje' => 'Materia creada con éxito.']);
         } else {
@@ -25,3 +22,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 } else {
     echo json_encode(['estado' => 'error', 'mensaje' => 'Método no permitido.']);
 }
+

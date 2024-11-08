@@ -7,20 +7,13 @@ $conn = $database->connect();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    if (isset($_POST['id_institucion']) && !empty($_POST['id_institucion'])) {
-        $id_institucion = $_POST['id_institucion'];
-
-        $materia = new Materia('', '');
-        $materia->setIdInstitucion($id_institucion);
-        $materias = $materia->obtenerMateriasPorInstitucion($conn);
-
-        if (!empty($materias)) {
-            echo json_encode(['estado' => 'exito', 'materias' => $materias]);
-        } else {
-            echo json_encode(['estado' => 'error', 'mensaje' => 'No se encontraron materias.']);
-        }
+    $id_institucion = $_POST['id_institucion'];
+    $materias = Materia::obtenerMateriasPorInstitucion($conn, $id_institucion);
+    
+    if (!empty($materias)) {
+        echo json_encode(['estado' => 'exito', 'materias' => $materias]);
     } else {
-        echo json_encode(['estado' => 'error', 'mensaje' => 'El id de institución es obligatorio.']);
+        echo json_encode(['estado' => 'error', 'mensaje' => 'No se encontraron materias.']);
     }
 } else {
     echo json_encode(['estado' => 'error', 'mensaje' => 'Método no permitido.']);

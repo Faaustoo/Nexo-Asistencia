@@ -31,7 +31,12 @@ document.getElementById('cerrar-eliminar-institucion').addEventListener('click',
 let formularioCrear = document.getElementById('formDatosInstitucion');
 formularioCrear.addEventListener('submit', function(e) {
     e.preventDefault(); 
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+
     let datos = new FormData(formularioCrear);
+    datos.append('id_profesor', id);
 
     fetch('registroInstitucion.php', { 
         method: 'POST',
@@ -39,15 +44,24 @@ formularioCrear.addEventListener('submit', function(e) {
     })
     .then(res => res.json())
     .then(data => {
+        console.log(data);  
+
         document.getElementById('resultado').innerHTML = '';
         document.getElementById('error').innerHTML = '';
 
         if (data.estado === 'exito') {
-            document.getElementById('resultado').innerHTML = data.mensaje; 
+            document.getElementById('resultado').innerHTML = data.mensaje;
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
         } else if (data.estado === 'error') {
-            data.errores.forEach(error => {
-                document.getElementById('error').innerHTML += error + '<br>'; 
-            });
+            if (data.errores) {
+                data.errores.forEach(error => {
+                    document.getElementById('error').innerHTML += error + '<br>';
+                });
+            } else {
+                document.getElementById('error').innerHTML = data.mensaje;
+            }
         }
     }).catch(error => {
         console.error('Error:', error);
@@ -55,10 +69,14 @@ formularioCrear.addEventListener('submit', function(e) {
     });
 });
 
+
 let formularioEliminar = document.getElementById('formDatosEliminarInstitucion');
 formularioEliminar.addEventListener('submit', function(e) {
     e.preventDefault(); 
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
     let datos = new FormData(formularioEliminar);
+    datos.append('id_profesor', id);
 
     fetch('eliminarInstitucion.php', { 
         method: 'POST',
@@ -71,6 +89,9 @@ formularioEliminar.addEventListener('submit', function(e) {
     
         if (data.estado === 'exito') {
             document.getElementById('resultado-eliminar').innerHTML = data.mensaje; 
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
         } else if (data.estado === 'error') {
             data.errores.forEach(error => {
                 document.getElementById('error-eliminar').innerHTML += error + '<br>'; 
@@ -85,8 +106,8 @@ formularioEliminar.addEventListener('submit', function(e) {
     
 });
 
-
 function cargarInstituciones() {
+    
     fetch('obtenerInstituciones.php') 
     .then(res => res.json())
     .then(data => {
@@ -104,6 +125,7 @@ function cargarInstituciones() {
     }).catch(error => {
         console.error('Error al cargar instituciones:', error);
     });
+    
 }
 
 document.addEventListener('DOMContentLoaded', cargarInstituciones);

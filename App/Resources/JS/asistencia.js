@@ -16,9 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const formularioEditar = document.getElementById('formularioeditarAlumno');
     const formularioEliminar = document.getElementById('formularioAlumnoEliminar');
 
-    let contadorClases = 0;
-    
-    // Mostrar la sección de tomar asistencia
+
     btnTomarAsistencia.addEventListener("click", () => {
         listaAlumnosDiv.style.display = "none";
         condicionAlumnosDiv.style.display = "none";
@@ -31,13 +29,13 @@ document.addEventListener("DOMContentLoaded", () => {
         cargarAlumnosAsistencia();
     });
 
-    // Función para cerrar la sección de asistencia
+
     btnCerrarAsistencia.addEventListener("click", () => {
         tomarAsistenciaDiv.style.display = "none"; 
         formularioTomarAsistencia.style.display = "none"; 
     });
 
-    // Cargar alumnos
+
     function cargarAlumnosAsistencia() {
         const url = new URLSearchParams(window.location.search);
         const idMateria = url.get('id'); 
@@ -59,7 +57,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="fecha-asistencia">
                         <label for="fecha">Seleccione la fecha:</label>
                         <input type="date" id="fecha" name="fecha">
-                        <div id="contadorClases">Cantidad de clases: ${contadorClases}</div>
                         <button class="todos" type="button" id="seleccionar-todos">Seleccionar Todos</button>
                     </div>
     
@@ -68,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <tr>
                                 <th>Nombre</th>
                                 <th>Apellido</th>
-                                <th>DNI</th>
+                                <th>Id alumno</th>
                                 <th>Asistencia</th>
                             </tr>
                         </thead>
@@ -80,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <tr>
                                 <td>${alumno.nombre}</td>
                                 <td>${alumno.apellido}</td>
-                                <td>${alumno.dni}</td>
+                                <td>${alumno.id_alumno}</td>
                                 <td>
                                     <input type="checkbox" class="asistencia-checkbox" data-id="${alumno.id_alumno}">
                                 </td>
@@ -99,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
                     listaAlumnos.innerHTML = tablaHTML;
     
-                    // Función para seleccionar todos los checkboxes
+                    // boton para seleccionar todos los checks
                     const seleccionarTodos = document.getElementById('seleccionar-todos');
                     seleccionarTodos.addEventListener('click', () => {
                         const checkboxes = document.querySelectorAll('.asistencia-checkbox');
@@ -108,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         });
                     });
     
-                    // Función para guardar asistencia
+                    
                     const btnGuardarAsistencia = document.getElementById("guardarAsistencia");
                     btnGuardarAsistencia.addEventListener("click", () => {
                         const fecha = document.getElementById('fecha').value;
@@ -118,17 +115,17 @@ document.addEventListener("DOMContentLoaded", () => {
                         formularioTomarAsistencia.style.display = 'block';
                         formularioEliminarAsistencia.style.display = 'none'; 
 
-                        // Manejo de eventos para el botón de confirmar (Sí)
+                        // si apreto si, guardo la asistencia en la bd
                         document.getElementById('si-asistencia').onclick = () => {
                             guardarAsistencia();
                         };
 
-                        // Manejo de eventos para el botón de cancelar (No)
+                        // si apreto no, cierro el formulario
                         document.getElementById('no-asistencia').onclick = () => {
-                            formularioTomarAsistencia.style.display = 'none'; // Cierra el formulario si se cancela
+                            formularioTomarAsistencia.style.display = 'none'; 
                         };
 
-                        // Cerrar el formulario al hacer clic en el botón CERRAR
+                        // cierro el formulario  de asistencia
                         document.getElementById('cerrar-asistencia').onclick = () => {
                             formularioTomarAsistencia.style.display = 'none';
                             tomarAsistenciaDiv.style.display = 'block';
@@ -142,21 +139,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     const botonEliminarAsistencia = document.getElementById('eliminarAsistencia');
                     botonEliminarAsistencia.addEventListener('click', () => {
-                        // Mostrar el formulario de eliminación
+                        // mostrar formulario para eliminar
                         formularioEliminarAsistencia.style.display = 'block'; 
                         formularioTomarAsistencia.style.display = 'none';
                         document.getElementById('resultado-eliminarAsistencia').innerHTML = ''; 
                         document.getElementById('error-eliminarAsistencia').innerHTML = '';
 
-                        // Confirmar eliminación
+                        // confirmar la asistencia que quiero eliminar
                         document.getElementById('enviar-asistencia-eliminar').onclick = () => {
+                            console.log('click')
                             eliminarAsistencia(); 
                         };
 
-                        // Cerrar el formulario sin eliminar
+                        // cerrar el formulario de eliminar
                         document.getElementById('cerrar-a-eliminar').onclick = () => {
                             formularioEliminarAsistencia.style.display = 'none'; 
-                            document.getElementById('fecha-eliminar').value='';
+                            document.getElementById('id-asistencia').value='';
+                            document.getElementById('fecha-asistencia').value='';
                         };
                     });
                 } else {
@@ -171,35 +170,34 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-   // Función para eliminar la asistencia
+
+
    function eliminarAsistencia() {
-    const fechaEliminar = document.getElementById('fecha-eliminar').value;
-    if (!fechaEliminar) {
-        alert('Seleccione una fecha para eliminar la asistencia.');
-        return;
-    }
+    const fechaEliminar = document.getElementById('fecha-asistencia').value;
+    const idEliminar = document.getElementById('id-asistencia').value;
 
     const datos = new FormData();
     datos.append('fecha', fechaEliminar); 
+    datos.append('id', idEliminar)
+
+  
+
     fetch('eliminarAsistencia.php', { 
         method: 'POST',
         body: datos
     })
     .then(res => res.json())
-    .then(data => {
-        console.log('Respuesta del servidor:', data); 
+    .then(data => { 
         document.getElementById('resultado-eliminarAsistencia').innerHTML = ''; 
         document.getElementById('error-eliminarAsistencia').innerHTML = ''; 
 
-        // Mostrar el mensaje de éxito o error
         if (data.estado === 'exito') {
-            contadorClases--; // Solo suma si se guarda correctamente
-            actualizarContador();
-            document.getElementById('resultado-eliminarAsistencia').innerHTML = data.mensaje; // Mensaje de éxito
-
+            document.getElementById('resultado-eliminarAsistencia').innerHTML = data.mensaje;
+            setTimeout(() => {formularioEliminarAsistencia.style.display = 'none'; 
+            }, 1000);
         } else if (data.estado === 'error') {
-            document.getElementById('error-eliminarAsistencia').innerHTML = data.mensaje; // Mensaje de error
-            if (data.errores && data.errores.length > 0) {
+            document.getElementById('error-eliminarAsistencia').innerHTML = data.mensaje; 
+            if (data.errores.length > 0) {
                 data.errores.forEach(error => {
                     document.getElementById('error-eliminarAsistencia').innerHTML += error + '<br>'; 
                 });
@@ -227,16 +225,20 @@ document.addEventListener("DOMContentLoaded", () => {
         const asistenciaDatos = [];
     
         checkboxes.forEach(checkbox => {
-            asistenciaDatos.push({
-                id_alumno: checkbox.dataset.id,
-                estado: checkbox.checked ? 1 : 0
-            });
+            let estado;
+            if (checkbox.checked) {
+                estado = 1;
+            } else {
+                estado = 0;
+            }
+            asistenciaDatos.push({id_alumno: checkbox.dataset.id,estado: estado});
         });
-    
+        
         const datos = new FormData();
         datos.append('fecha', fecha); 
         datos.append('id_materia', idMateria);
-        datos.append('asistencias', JSON.stringify(asistenciaDatos)); // Enviar el array completo de asistencias como JSON
+        datos.append('asistencias', JSON.stringify(asistenciaDatos));
+
     
         fetch('guardarAsistencia.php', {
             method: 'POST',
@@ -248,10 +250,17 @@ document.addEventListener("DOMContentLoaded", () => {
             const resultadoAsistencia = document.getElementById('resultado-asistencia');
             const errorAsistencia = document.getElementById('error-asistencia');
     
-            if (data.estado === 'exito') {
-                contadorClases++; 
-                actualizarContador();
+            if (data.estado === 'exito') {;
                 resultadoAsistencia.innerHTML = data.mensaje;
+                setTimeout(() => {formularioTomarAsistencia.style.display = 'none'; 
+                    divAsistencia.style.display = "block"; 
+                }, 1000);
+                const checkboxes = document.querySelectorAll('.asistencia-checkbox');
+                            checkboxes.forEach(checkbox => {
+                                checkbox.checked = false;
+                            });
+                            document.getElementById('fecha').value = '';
+                cargarAlumnos();
             } else {
                 errorAsistencia.innerHTML = data.mensaje;
             }
@@ -260,12 +269,6 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error('Error al guardar asistencia:', error);
         });
     }
-    
-    function actualizarContador() {
-        document.getElementById('contadorClases').innerHTML = `Cantidad de clases: ${contadorClases}`;
-    }
-    
-
     
 
 });
