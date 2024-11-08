@@ -15,8 +15,12 @@ Pasos para Descargar, Configurar y Ejecutar el Proyecto con Laragon: Ve a Larago
     https://laragon.org/download/
 Ejecuta el instalador y sigue las instrucciones para completar la instalación. Una vez instalado, inicia Laragon y asegúrate de que los servicios de Apache y MySQL estén activos (puedes verlos en la interfaz de Laragon). Si no están iniciados, ve a Configuración > Servicios y Puertos, y selecciona las casillas de Apache y MySQL.
 
+
  
 Descargar el Proyecto:
+
+
+
   -Descarga el archivo ZIP del proyecto desde el repositorio de GitHub:
     -Haz clic en el botón Code y selecciona Download ZIP.
     -Extrae el archivo ZIP en una carpeta, y podrás cambiarle el nombre a la carpeta según prefieras.
